@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Cadastro de Clientes</string>
+    <string name="tela_1">Tela 1</string>
+    <string name="button">VAI tela 2</string>
+    <string name="msg">Mensagem %1$s</string>
+    <string name="tela_3">Tela 3</string>
+</resources>

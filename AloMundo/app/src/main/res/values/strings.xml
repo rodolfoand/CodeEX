@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Alo Mundo</string>
+    <string name="nome_do_cliente">Cliente</string>
+    <string name="campo_nome_cliente">Nome do Cliente</string>
+    <string name="email_cliente" translatable="false">E-Mail</string>
+    <string name="botao_salvar">Salvar</string>
+    <string name="gfdsgfds">gfdsg</string>
+</resources>

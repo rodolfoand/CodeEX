@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Juros Simples</string>
+    <string name="calcular">Calcular</string>
+    <string name="capital_inicial">Capital Inicial</string>
+    <string name="capital_resultante">Capital Resultante</string>
+    <string name="limpar">Limpar</string>
+    <string name="n_de_meses">Nº de Meses</string>
+    <string name="taxa_de_juros_mensal">Taxa de Juros Mensal</string>
+</resources>
