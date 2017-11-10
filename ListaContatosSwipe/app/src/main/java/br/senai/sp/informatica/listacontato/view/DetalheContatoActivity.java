@@ -97,7 +97,6 @@ public class DetalheContatoActivity extends AppCompatActivity {
                 break;
         }
         finish();
-
         return true;
     }
 }
