@@ -4,15 +4,14 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import br.senai.sp.informatica.listacontato.R;
 import br.senai.sp.informatica.listacontato.model.Contato;
@@ -75,7 +74,7 @@ public class DetalheContatoActivity extends AppCompatActivity {
             case android.R.id.home:
                 setResult(Activity.RESULT_CANCELED);
                 break;
-            case R.id.mi_salvar:
+            case R.id.mi_detalhe_salvar:
                 if (cont == null){
                     cont = new Contato();
                 }
@@ -85,11 +84,15 @@ public class DetalheContatoActivity extends AppCompatActivity {
                 try {
                     cont.setDtNascimento(novaData.parse(etDataNascimento.getText().toString()));
                 } catch (ParseException e){
-                    //
+                    Toast.makeText(this,"Data inválida. O contato não foi salvo: " + e, Toast.LENGTH_SHORT).show();
                 }
                 //cont.setDtNascimento(new Date(1985, 9, 26));
                 dao.salvar(cont);
 
+                setResult(Activity.RESULT_OK);
+                break;
+            case R.id.mi_detalhe_apagar:
+                dao.remover(cont.getId());
                 setResult(Activity.RESULT_OK);
                 break;
         }

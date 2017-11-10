@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by WEB on 01/11/2017.
  */
-
+//TODO: teste
 public class ContatoDao {
     public static ContatoDao manager = new ContatoDao();
     private List<Contato> lista;
@@ -51,5 +51,37 @@ public class ContatoDao {
         }
 
 
+    }
+
+    public void remover(Long id){
+        lista.remove(new Contato(id));
+
+    }
+
+    public void apagarSelecionados() {
+        List<Contato> contatos = new ArrayList<>();
+        for (Contato obj: lista) {
+            if (obj.isDel()){
+                contatos.add(obj);
+            }
+        }
+
+        for (Contato obj: contatos) {
+            remover(obj.getId());
+        }
+    }
+
+    public void duplicarSelecionados() {
+        List<Contato> contatos = new ArrayList<>();
+        for (Contato obj: lista) {
+            if (obj.isDel()){
+                contatos.add(obj);
+            }
+        }
+
+        for (Contato obj: contatos) {
+            obj.setId(null);
+            salvar(obj);
+        }
     }
 }

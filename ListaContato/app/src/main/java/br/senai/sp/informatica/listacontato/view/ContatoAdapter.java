@@ -2,11 +2,14 @@ package br.senai.sp.informatica.listacontato.view;
 
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,9 +23,18 @@ import br.senai.sp.informatica.listacontato.model.ContatoDao;
  * Created by WEB on 01/11/2017.
  */
 
-public class ContatoAdapter extends BaseAdapter {
+public class ContatoAdapter extends BaseAdapter implements View.OnClickListener{
     private ContatoDao dao = ContatoDao.manager;
     private Map<Integer, Long> mapa;
+
+    private boolean trocouLayout = false;
+    private boolean apagar = false;
+
+
+    public enum TipoDeDetalhe{
+        EDICAO,
+        EXCLUSAO;
+    }
 
     public ContatoAdapter() {
         criaMapa();
@@ -60,12 +72,18 @@ public class ContatoAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ConstraintLayout layout;
-        if (convertView == null){
+        if (convertView == null || trocouLayout){
             Context ctx = parent.getContext();
             LayoutInflater inflater = (LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             layout = new ConstraintLayout(ctx);
-            inflater.inflate(R.layout.layout_detalhe_lista, layout);
+            //TODO: verificar
+            if (!apagar){
+                inflater.inflate(R.layout.layout_detalhe_lista, layout);
+            } else {
+                inflater.inflate(R.layout.layout_detalhe_lista_apagar, layout);
+            }
+            Log.d("ContatoAdapter", "apagar: "+ apagar);
 
         } else {
             layout = (ConstraintLayout)convertView;
@@ -81,7 +99,34 @@ public class ContatoAdapter extends BaseAdapter {
         tvNome.setText(cont.getNome());
         tvEmail.setText(cont.getEmail());
 
+
+        if (apagar){
+            CheckBox checkBox = (CheckBox)layout.findViewById(R.id.checkBox);
+            checkBox.setTag(cont.getId());
+            checkBox.setOnClickListener(this);
+        }
+        Log.d("ContatoAdapter", "apagar: " + apagar);
         return layout;
     }
 
+    public void setLayout(TipoDeDetalhe tipo){
+        if (tipo == TipoDeDetalhe.EDICAO){
+            apagar = false;
+        } else {
+            apagar = true;
+        }
+        trocouLayout = true;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v) {
+        Long id = (Long)v.getTag();
+        Contato cont = dao.getContato(id);
+        cont.setDel(!cont.isDel());
+
+        //Log.d("ContatoAdapter", "Contato marcado para exclusão [" + cont.isDel() + "] id: " + cont.getNome());
+
+        dao.salvar(cont);
+    }
 }

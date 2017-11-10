@@ -14,12 +14,21 @@ public class Contato implements Comparable<Contato>{
     private String nome;
     private String email;
     private Date dtNascimento;
+    private boolean del;
 
     public Contato(Long id, String nome, String email, Date dtNascimento) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.dtNascimento = dtNascimento;
+    }
+
+    public boolean isDel() {
+        return del;
+    }
+
+    public void setDel(boolean del) {
+        this.del = del;
     }
 
     public Contato() {
