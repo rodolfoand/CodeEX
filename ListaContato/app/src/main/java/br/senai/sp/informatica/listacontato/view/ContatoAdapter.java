@@ -105,7 +105,7 @@ public class ContatoAdapter extends BaseAdapter implements View.OnClickListener{
             checkBox.setTag(cont.getId());
             checkBox.setOnClickListener(this);
         }
-        Log.d("ContatoAdapter", "apagar: " + apagar);
+        //Log.d("ContatoAdapter", "apagar: " + apagar);
         return layout;
     }
 
