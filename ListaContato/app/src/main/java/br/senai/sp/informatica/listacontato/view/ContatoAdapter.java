@@ -1,7 +1,9 @@
 package br.senai.sp.informatica.listacontato.view;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +31,6 @@ public class ContatoAdapter extends BaseAdapter implements View.OnClickListener{
 
     private boolean trocouLayout = false;
     private boolean apagar = false;
-
 
     public enum TipoDeDetalhe{
         EDICAO,

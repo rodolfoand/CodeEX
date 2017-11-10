@@ -1,7 +1,9 @@
 package br.senai.sp.informatica.listacontato.view;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +16,7 @@ import android.widget.ListView;
 import br.senai.sp.informatica.listacontato.R;
 import br.senai.sp.informatica.listacontato.model.ContatoDao;
 
-public class ListaContatoActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
+public class ListaContatoActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, DialogInterface.OnClickListener{
 
     private ListView listView;
     private final int EDITA_CONTATO = 0;
@@ -86,11 +88,16 @@ public class ListaContatoActivity extends AppCompatActivity implements AdapterVi
 
         switch (id){
             case R.id.mi_lista_apagar:
-                dao.apagarSelecionados();
-                itemLista.setLayout(ContatoAdapter.TipoDeDetalhe.EDICAO);
-                miEditar.setVisible(true);
-                miApagar.setVisible(false);
-                miDuplicar.setVisible(false);
+                AlertDialog.Builder alerta = new AlertDialog.Builder(this);
+                alerta.setMessage("Deseja apagar os contatos selecionados?");
+                alerta.setNegativeButton("Não",null);
+                alerta.setPositiveButton("Sim", this);
+                alerta.create();
+                alerta.show();
+
+
+
+
                 break;
             case R.id.mi_lista_editar:
                 itemLista.setLayout(ContatoAdapter.TipoDeDetalhe.EXCLUSAO);
@@ -108,5 +115,16 @@ public class ListaContatoActivity extends AppCompatActivity implements AdapterVi
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        dao.apagarSelecionados();
+        itemLista.setLayout(ContatoAdapter.TipoDeDetalhe.EDICAO);
+        miEditar.setVisible(true);
+        miApagar.setVisible(false);
+        miDuplicar.setVisible(false);
+
+        Snackbar.make(findViewById(android.R.id.content), "Os contatos selecionados foram apagados.",Snackbar.LENGTH_LONG).show();
     }
 }
