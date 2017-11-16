@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="br.senai.sp.informatica.listacontato">
+    package="br.senai.sp.informatica.meusalbuns">
 
     <application
         android:allowBackup="true"
@@ -9,18 +9,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".control.ListaContatoActivity">
+        <activity android:name=".control.ListaAlbuns">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".control.DetalheContatoActivity"
-            android:parentActivityName=".control.ListaContatoActivity">
+        <activity android:name=".control.DetalheAlbum"
+            android:parentActivityName=".control.ListaAlbuns">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".control.ListaContatoActivity"/>
+                android:value=".control.ListaAlbuns"/>
         </activity>
     </application>
 

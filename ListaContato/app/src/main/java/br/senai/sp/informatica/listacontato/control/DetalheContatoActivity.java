@@ -1,4 +1,4 @@
-package br.senai.sp.informatica.listacontato.view;
+package br.senai.sp.informatica.listacontato.control;
 
 import android.app.ActionBar;
 import android.app.Activity;

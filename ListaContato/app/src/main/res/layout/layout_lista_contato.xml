@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.senai.sp.informatica.listacontato.view.ListaContatoActivity">
+    tools:context="br.senai.sp.informatica.listacontato.control.ListaContatoActivity">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btAdicionar"

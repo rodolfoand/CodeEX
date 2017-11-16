@@ -84,4 +84,13 @@ public class ContatoDao {
             salvar(obj);
         }
     }
+
+    public boolean existeSelecao() {
+        for (Contato obj: lista) {
+            if (obj.isDel()){
+                return true;
+            }
+        }
+        return false;
+    }
 }

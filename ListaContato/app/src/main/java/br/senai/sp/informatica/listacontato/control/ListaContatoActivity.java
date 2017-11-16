@@ -1,4 +1,4 @@
-package br.senai.sp.informatica.listacontato.view;
+package br.senai.sp.informatica.listacontato.control;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -88,13 +88,19 @@ public class ListaContatoActivity extends AppCompatActivity implements AdapterVi
 
         switch (id){
             case R.id.mi_lista_apagar:
-                AlertDialog.Builder alerta = new AlertDialog.Builder(this);
-                alerta.setMessage("Deseja apagar os contatos selecionados?");
-                alerta.setNegativeButton("Não",null);
-                alerta.setPositiveButton("Sim", this);
-                alerta.create();
-                alerta.show();
-
+                if (dao.existeSelecao()) {
+                    AlertDialog.Builder alerta = new AlertDialog.Builder(this);
+                    alerta.setMessage("Deseja apagar os contatos selecionados?");
+                    alerta.setNegativeButton("Não", null);
+                    alerta.setPositiveButton("Sim", this);
+                    alerta.create();
+                    alerta.show();
+                } else {
+                    itemLista.setLayout(ContatoAdapter.TipoDeDetalhe.EDICAO);
+                    miEditar.setVisible(true);
+                    miApagar.setVisible(false);
+                    miDuplicar.setVisible(false);
+                }
 
 
 
