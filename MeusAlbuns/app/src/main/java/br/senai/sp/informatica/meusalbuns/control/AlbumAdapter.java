@@ -6,8 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,12 +23,16 @@ import br.senai.sp.informatica.meusalbuns.model.AlbumDao;
  * Created by 34023325821 on 16/11/2017.
  */
 
-public class AlbumAdapter extends BaseAdapter {
+public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
     private AlbumDao dao = AlbumDao.manager;
     private Map<Integer, Long> mapa;
 
     private boolean alteraLayout = false;
     private boolean editar = false;
+
+    private static DateFormat fmt = DateFormat.getDateInstance(DateFormat.LONG);
+
+    private List<Long> listaSelecionados = new ArrayList<>();
 
     public void criaMapa(){
         mapa = new HashMap<>();
@@ -74,16 +81,21 @@ public class AlbumAdapter extends BaseAdapter {
         TextView tvArtista = layout.findViewById(R.id.etArtista);
         TextView tvNome = layout.findViewById(R.id.tvNome);
         TextView tvGenero = layout.findViewById(R.id.tvGenero);
-        //TextView tvDtLancamento = layout.findViewById(R.id.tvDtLancamento);
+        TextView tvDtLancamento = layout.findViewById(R.id.tvDtLancamento);
 
         Album album = dao.getAlbum(mapa.get(position));
 
         tvArtista.setText(album.getArtista());
         tvNome.setText(album.getAlbum());
         tvGenero.setText(album.getGenero());
-        //tvDtLancamento.setText(album.getDtLancamento());
-        //TODO: Ajustar apresentação de data e capa
+        tvDtLancamento.setText(fmt.format(album.getDtLancamento()));
+        //TODO: Ajustar apresentação de capa
 
+        if (editar) {
+            CheckBox cbApagar = (CheckBox)layout.findViewById(R.id.cbApagar);
+            cbApagar.setTag(album.getId());
+            cbApagar.setOnClickListener(this);
+        }
         return layout;
     }
 
@@ -91,6 +103,15 @@ public class AlbumAdapter extends BaseAdapter {
     public void notifyDataSetChanged() {
         criaMapa();
         super.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v) {
+        Long id = (Long)v.getTag();
+
+        listaSelecionados.add(id);
+        //Album album =  dao.getAlbum(id);
+        //album.setAtivo(!album.isAtivo());
     }
 
     enum TipoLista {
@@ -103,8 +124,14 @@ public class AlbumAdapter extends BaseAdapter {
             editar = true;
         } else {
             editar = false;
+            listaSelecionados = new ArrayList<>();
         }
         alteraLayout = true;
+        //dao.retiraSelecionados(listaSelecionados);
         notifyDataSetChanged();
+    }
+
+    public List<Long> getListaSelecionados(){
+        return listaSelecionados;
     }
 }

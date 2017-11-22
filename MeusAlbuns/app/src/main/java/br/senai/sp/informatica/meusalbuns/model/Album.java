@@ -1,6 +1,7 @@
 package br.senai.sp.informatica.meusalbuns.model;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by 34023325821 on 14/11/2017.
@@ -11,7 +12,7 @@ public class Album {
     private String album;
     private String artista;
     private String genero;
-    private Calendar dtLancamento;
+    private Date dtLancamento;
     private boolean ativo;
     private byte[] capa;
 
@@ -22,7 +23,7 @@ public class Album {
         this.id = id;
     }
 
-    public Album(Long id, String nome, String artista, String genero, Calendar dtLancamento, boolean ativo) {
+    public Album(Long id, String nome, String artista, String genero, Date dtLancamento, boolean ativo) {
         this.id = id;
         this.album = nome;
         this.artista = artista;
@@ -63,11 +64,11 @@ public class Album {
         this.genero = genero;
     }
 
-    public Calendar getDtLancamento() {
+    public Date getDtLancamento() {
         return dtLancamento;
     }
 
-    public void setDtLancamento(Calendar dtLancamento) {
+    public void setDtLancamento(Date dtLancamento) {
         this.dtLancamento = dtLancamento;
     }
 

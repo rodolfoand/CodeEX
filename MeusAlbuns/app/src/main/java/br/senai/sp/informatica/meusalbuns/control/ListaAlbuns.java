@@ -1,17 +1,23 @@
 package br.senai.sp.informatica.meusalbuns.control;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import br.senai.sp.informatica.meusalbuns.R;
+import java.util.List;
 
-public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItemClickListener{
+import br.senai.sp.informatica.meusalbuns.R;
+import br.senai.sp.informatica.meusalbuns.model.AlbumDao;
+
+public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItemClickListener,DialogInterface.OnClickListener{
 
     private ListView listaAlbuns;
     private AlbumAdapter albumAdapter;
@@ -20,6 +26,10 @@ public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItem
     private MenuItem miApagar;
 
     private final int EDITA_ALBUM = 0;
+    private final int ADICIONA_ALBUM = 0;
+
+    private AlbumDao dao = AlbumDao.manager;
+    private List<Long> listaSelecionados;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +78,39 @@ public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItem
                 miApagar.setVisible(true);
                 break;
             case R.id.mi_lis_apagar:
-                albumAdapter.setLayout(AlbumAdapter.TipoLista.APAGAR);
-                miEditar.setVisible(true);
-                miApagar.setVisible(false);
+                listaSelecionados = albumAdapter.getListaSelecionados();
+                if (listaSelecionados.size() > 0){
+                    AlertDialog.Builder alerta = new AlertDialog.Builder(this);
+                    alerta.setMessage("Deseja apagar os albuns selecionados?");
+                    alerta.setNegativeButton("Não", this);
+                    alerta.setPositiveButton("Sim", this);
+                    alerta.create();
+                    alerta.show();
+                } else {
+                    albumAdapter.setLayout(AlbumAdapter.TipoLista.APAGAR);
+                    miEditar.setVisible(true);
+                    miApagar.setVisible(false);
+                }
                 break;
         }
 
         return true;
+    }
+
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        if (which == -1) {
+            listaSelecionados = albumAdapter.getListaSelecionados();
+            dao.retiraSelecionados(listaSelecionados);
+        }
+        albumAdapter.setLayout(AlbumAdapter.TipoLista.APAGAR);
+        miEditar.setVisible(true);
+        miApagar.setVisible(false);
+        //Log.d("Teste Dialog","Valor recebido: " + which);
+    }
+
+    public void onClickAdicionar(View v){
+        Intent tela = new Intent(getBaseContext(), DetalheAlbum.class);
+        startActivityForResult(tela, ADICIONA_ALBUM);
     }
 }
