@@ -58,7 +58,6 @@ public class AlbumDao {
             album = this.getAlbum(id);
             album.setAtivo(!album.isAtivo());
         }
+        this.getLista();
     }
-
-
 }

@@ -34,6 +34,8 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
 
     private List<Long> listaSelecionados = new ArrayList<>();
 
+    private int posicao = -1;
+
     public void criaMapa(){
         mapa = new HashMap<>();
         List<Album> listaAlbuns =dao.getLista();
@@ -91,8 +93,16 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
         tvDtLancamento.setText(fmt.format(album.getDtLancamento()));
         //TODO: Ajustar apresentação de capa
 
+        CheckBox cbApagar = (CheckBox)layout.findViewById(R.id.cbApagar);
+
+        if (posicao == position){
+            cbApagar.setChecked(!cbApagar.isChecked());
+            listaSelecionados.add(album.getId());
+            posicao = -1;
+        }
+
         if (editar) {
-            CheckBox cbApagar = (CheckBox)layout.findViewById(R.id.cbApagar);
+
             cbApagar.setTag(album.getId());
             cbApagar.setOnClickListener(this);
         }
@@ -130,8 +140,21 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
         //dao.retiraSelecionados(listaSelecionados);
         notifyDataSetChanged();
     }
+    public void setLayout(TipoLista tipo, int pos){
+        if (tipo == TipoLista.EDITAR){
+            editar = true;
+        } else {
+            editar = false;
+            listaSelecionados = new ArrayList<>();
+        }
+        alteraLayout = true;
+        posicao = pos;
+        //dao.retiraSelecionados(listaSelecionados);
+        notifyDataSetChanged();
+    }
 
     public List<Long> getListaSelecionados(){
         return listaSelecionados;
     }
+
 }

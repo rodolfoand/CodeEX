@@ -11,13 +11,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import br.senai.sp.informatica.meusalbuns.R;
 import br.senai.sp.informatica.meusalbuns.model.AlbumDao;
 
-public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItemClickListener,DialogInterface.OnClickListener{
+public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItemClickListener
+        ,DialogInterface.OnClickListener
+        ,AdapterView.OnItemLongClickListener{
 
     private ListView listaAlbuns;
     private AlbumAdapter albumAdapter;
@@ -41,6 +44,7 @@ public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItem
         albumAdapter = new AlbumAdapter();
         listaAlbuns.setAdapter(albumAdapter);
         listaAlbuns.setOnItemClickListener(this);
+        listaAlbuns.setOnItemLongClickListener(this);
     }
 
     @Override
@@ -112,5 +116,13 @@ public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItem
     public void onClickAdicionar(View v){
         Intent tela = new Intent(getBaseContext(), DetalheAlbum.class);
         startActivityForResult(tela, ADICIONA_ALBUM);
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        albumAdapter.setLayout(AlbumAdapter.TipoLista.EDITAR, position);
+        miEditar.setVisible(false);
+        miApagar.setVisible(true);
+        return false;
     }
 }
