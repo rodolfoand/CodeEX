@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -102,7 +103,6 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
         }
 
         if (editar) {
-
             cbApagar.setTag(album.getId());
             cbApagar.setOnClickListener(this);
         }

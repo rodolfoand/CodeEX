@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -38,6 +39,7 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
     private EditText etAlbum;
     private EditText etGenero;
     private EditText etDtLancamento;
+    private ImageView ivCapa;
     //TODO: Ajustar apresentacao de capa
     private static DateFormat fmt = DateFormat.getDateInstance(DateFormat.LONG);
 
@@ -61,6 +63,7 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
         etAlbum = (EditText)findViewById(R.id.etAlbum);
         etGenero = (EditText)findViewById(R.id.etGenero);
         etDtLancamento = (EditText)findViewById(R.id.etDtLancamento);
+        ivCapa = (ImageView)findViewById(R.id.ivCapa);
 
         btLancamento = (Button)findViewById(R.id.btLancamento);
         btLancamento.setOnClickListener(this);

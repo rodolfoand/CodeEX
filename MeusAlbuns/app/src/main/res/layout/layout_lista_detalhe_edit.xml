@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/ivCapa"
         android:layout_width="110dp"
         android:layout_height="110dp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -22,7 +22,7 @@
         android:layout_marginTop="8dp"
         android:text="Artista"
         android:textAppearance="@android:style/TextAppearance.Material.Body2"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintLeft_toRightOf="@+id/ivCapa"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -34,7 +34,7 @@
         android:layout_marginTop="8dp"
         android:text="Nome"
         android:textAppearance="@android:style/TextAppearance.Material.Body1"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintLeft_toRightOf="@+id/ivCapa"
         app:layout_constraintTop_toBottomOf="@+id/etArtista" />
 
     <TextView
@@ -44,7 +44,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:text="Genero"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintLeft_toRightOf="@+id/ivCapa"
         app:layout_constraintTop_toBottomOf="@+id/tvNome" />
 
     <TextView
@@ -55,7 +55,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Lancamento"
-        app:layout_constraintLeft_toRightOf="@+id/imageView"
+        app:layout_constraintLeft_toRightOf="@+id/ivCapa"
         app:layout_constraintTop_toBottomOf="@+id/tvGenero" />
 
     <CheckBox
