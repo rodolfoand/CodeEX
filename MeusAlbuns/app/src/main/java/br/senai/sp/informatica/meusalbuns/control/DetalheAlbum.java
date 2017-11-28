@@ -7,9 +7,14 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.ParseException;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,12 +24,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.jar.Manifest;
 
 import br.senai.sp.informatica.meusalbuns.R;
+import br.senai.sp.informatica.meusalbuns.lib.Util;
 import br.senai.sp.informatica.meusalbuns.model.Album;
 import br.senai.sp.informatica.meusalbuns.model.AlbumDao;
 
@@ -49,6 +57,8 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
 
     private Calendar dataLancamento;
 
+    private static final int PERMITIR_GALERIA = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +77,7 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
 
         btLancamento = (Button)findViewById(R.id.btLancamento);
         btLancamento.setOnClickListener(this);
+        ivCapa.setOnClickListener(this);
 
         Intent intent = getIntent();
         if (intent != null){
@@ -79,7 +90,13 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
                     etAlbum.setText(album.getAlbum());
                     etGenero.setText(album.getGenero());
                     etDtLancamento.setText(fmt.format(album.getDtLancamento()));
-                    //TODO: Ajustar apresentação de capa
+                    try {
+                        ivCapa.setImageBitmap(Util.bitmapFromBase64(album.getCapa()));
+                    } catch (Exception e) {
+                        Bitmap bitmap = getBitmapLetra(etAlbum.getText().toString());
+                        ivCapa.setImageBitmap(bitmap);
+                    }
+
                 }
             }
         }
@@ -104,7 +121,7 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
                 album.setAlbum(etAlbum.getText().toString());
                 album.setGenero(etGenero.getText().toString());
                 //album.setDtLancamento(etDtLancamento.getText());
-
+                //album.setDtLancamento(new Date(fmt.format(etDtLancamento.getText().toString())));
 
                 try {
                     dataLancamento = Calendar.getInstance();
@@ -112,8 +129,13 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
                     album.setDtLancamento(dataLancamento.getTime());
                 } catch (java.text.ParseException ex) {}
 
-                //album.setDtLancamento(new Date(fmt.format(etDtLancamento.getText().toString())));
+
                 //TODO: Ajustar imagem;
+                Bitmap bitmap = getBitmapLetra(etAlbum.getText().toString());
+                ivCapa.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
+                ivCapa.setImageBitmap(bitmap);
+                album.setCapa(Util.bitmapToBase64(bitmap));
+
                 dao.salvar(album);
                 setResult(Activity.RESULT_OK);
                 break;
@@ -124,14 +146,57 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        DateDialog dialog = new DateDialog();
-        try {
-            dataLancamento = Calendar.getInstance();
-            dataLancamento.setTime(fmt.parse(etDtLancamento.getText().toString()));
-            dialog.setCalendar(dataLancamento);
-        } catch (java.text.ParseException ex) {}
-        dialog.setEditText(etDtLancamento);
-        dialog.setView(v);
-        dialog.show(getFragmentManager(), "Data de lançamento");
+        int id = v.getId();
+        //Toast.makeText(this, ""+id, Toast.LENGTH_SHORT).show();
+        //Log.d("OnClick","" +id);
+        switch (id) {
+            case R.id.btLancamento:
+                DateDialog dialog = new DateDialog();
+                try {
+                    dataLancamento = Calendar.getInstance();
+                    dataLancamento.setTime(fmt.parse(etDtLancamento.getText().toString()));
+                    dialog.setCalendar(dataLancamento);
+                } catch (java.text.ParseException ex) {
+                }
+                dialog.setEditText(etDtLancamento);
+                dialog.setView(v);
+                dialog.show(getFragmentManager(), "Data de lançamento");
+                break;
+            case R.id.ivCapa:
+                Bitmap bitmap = getBitmapLetra(etAlbum.getText().toString());
+                ivCapa.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
+                ivCapa.setImageBitmap(bitmap);
+                Toast.makeText(this,""+ivCapa.getHeight(), Toast.LENGTH_LONG).show();
+
+                break;
+        }
+    }
+
+    public Bitmap getBitmapLetra(String texto){
+        Bitmap bitmap = Util.circularBitmapAndText(
+                ContextCompat.getColor(this
+                        , R.color.colorPrimary)
+                , 200
+                , 600
+                , texto.substring(0,1).toUpperCase());
+        return bitmap;
+    }
+
+    public void getImagemGaleria(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        if (intent.resolveActivity(getPackageManager()) != null){
+            if ((ContextCompat.checkSelfPermission(getBaseContext()
+                    , android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)){
+                ActivityCompat.requestPermissions(this
+                        , new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}
+                        , PERMITIR_GALERIA);
+            } else {
+                startActivityForResult(Intent.createChooser(intent, "Selecione a imagem para capa"), );
+            }
+
+        }
     }
 }

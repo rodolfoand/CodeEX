@@ -1,7 +1,9 @@
 package br.senai.sp.informatica.meusalbuns.control;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.senai.sp.informatica.meusalbuns.R;
+import br.senai.sp.informatica.meusalbuns.lib.Util;
 import br.senai.sp.informatica.meusalbuns.model.Album;
 import br.senai.sp.informatica.meusalbuns.model.AlbumDao;
 
@@ -85,6 +88,7 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
         TextView tvNome = layout.findViewById(R.id.tvNome);
         TextView tvGenero = layout.findViewById(R.id.tvGenero);
         TextView tvDtLancamento = layout.findViewById(R.id.tvDtLancamento);
+        ImageView ivCapa = layout.findViewById(R.id.ivCapa);
 
         Album album = dao.getAlbum(mapa.get(position));
 
@@ -92,6 +96,19 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
         tvNome.setText(album.getAlbum());
         tvGenero.setText(album.getGenero());
         tvDtLancamento.setText(fmt.format(album.getDtLancamento()));
+
+
+
+        try {
+            ivCapa.setImageBitmap(Util.bitmapFromBase64(album.getCapa()));
+        } catch (Exception e) {
+            Bitmap bitmap = Util.circularBitmapAndText(
+            ContextCompat.getColor(layout.getContext(), R.color.colorPrimary)
+                    , 200
+                    , 600
+                    , tvNome.getText().toString().substring(0,1).toUpperCase());
+            ivCapa.setImageBitmap(bitmap);
+        }
         //TODO: Ajustar apresentação de capa
 
         CheckBox cbApagar = (CheckBox)layout.findViewById(R.id.cbApagar);
