@@ -57,7 +57,8 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
 
     private Calendar dataLancamento;
 
-    private static final int PERMITIR_GALERIA = 0;
+    private static final int REQUEST_PERMISSION_EX_STORAGE = 0;
+    private static final int INTENT_IMAGE_CHOOSER = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,11 +164,12 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
                 dialog.show(getFragmentManager(), "Data de lançamento");
                 break;
             case R.id.ivCapa:
-                Bitmap bitmap = getBitmapLetra(etAlbum.getText().toString());
+                /*Bitmap bitmap = getBitmapLetra(etAlbum.getText().toString());
                 ivCapa.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
                 ivCapa.setImageBitmap(bitmap);
                 Toast.makeText(this,""+ivCapa.getHeight(), Toast.LENGTH_LONG).show();
-
+                */
+                getImagemGaleria();
                 break;
         }
     }
@@ -192,9 +194,10 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
                     , android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)){
                 ActivityCompat.requestPermissions(this
                         , new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}
-                        , PERMITIR_GALERIA);
+                        , REQUEST_PERMISSION_EX_STORAGE);
             } else {
-                startActivityForResult(Intent.createChooser(intent, "Selecione a imagem para capa"), );
+                startActivityForResult(Intent.createChooser(intent, "Selecione a imagem para capa")
+                        , INTENT_IMAGE_CHOOSER);
             }
 
         }
