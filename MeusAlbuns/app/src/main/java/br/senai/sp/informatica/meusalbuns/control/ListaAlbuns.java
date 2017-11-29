@@ -34,6 +34,8 @@ public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItem
     private AlbumDao dao = AlbumDao.manager;
     private List<Long> listaSelecionados;
 
+    private boolean edicao = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,9 +51,13 @@ public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Intent tela = new Intent(getBaseContext(), DetalheAlbum.class);
-        tela.putExtra("id", id);
-        startActivityForResult(tela, EDITA_ALBUM);
+        if (edicao == true) {
+            Intent tela = new Intent(getBaseContext(), DetalheAlbum.class);
+            tela.putExtra("id", id);
+            startActivityForResult(tela, EDITA_ALBUM);
+        } else {
+            albumAdapter.setItemSelecionado(position);
+        }
     }
 
     @Override
@@ -80,6 +86,8 @@ public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItem
                 albumAdapter.setLayout(AlbumAdapter.TipoLista.EDITAR);
                 miEditar.setVisible(false);
                 miApagar.setVisible(true);
+                edicao = true;
+
                 break;
             case R.id.mi_lis_apagar:
                 listaSelecionados = albumAdapter.getListaSelecionados();
@@ -95,6 +103,7 @@ public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItem
                     miEditar.setVisible(true);
                     miApagar.setVisible(false);
                 }
+                edicao = false;
                 break;
         }
 

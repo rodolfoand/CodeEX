@@ -9,8 +9,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.ParseException;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +29,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -60,6 +64,8 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
     private static final int REQUEST_PERMISSION_EX_STORAGE = 0;
     private static final int INTENT_IMAGE_CHOOSER = 1;
 
+    private boolean capaAlterada = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,12 +96,25 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
                     etArtista.setText(album.getArtista());
                     etAlbum.setText(album.getAlbum());
                     etGenero.setText(album.getGenero());
-                    etDtLancamento.setText(fmt.format(album.getDtLancamento()));
+                    //etDtLancamento.setText(fmt.format(album.getDtLancamento()));
+
+                    Date data = album.getDtLancamento();
+                    if(data != null) {
+                        etDtLancamento.setText(fmt.format(data));
+                    }
+
+                    //etDtLancamento.setText(fmt.format(album.getDtLancamento()));
+
+
+
                     try {
                         ivCapa.setImageBitmap(Util.bitmapFromBase64(album.getCapa()));
                     } catch (Exception e) {
-                        Bitmap bitmap = getBitmapLetra(etAlbum.getText().toString());
-                        ivCapa.setImageBitmap(bitmap);
+                        String nomeAlbum = etAlbum.getText().toString();
+                        if (!nomeAlbum.isEmpty()) {
+                            Bitmap bitmap = getBitmapLetra(nomeAlbum);
+                            ivCapa.setImageBitmap(bitmap);
+                        }
                     }
 
                 }
@@ -132,11 +151,10 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
 
 
                 //TODO: Ajustar imagem;
-                Bitmap bitmap = getBitmapLetra(etAlbum.getText().toString());
-                ivCapa.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
-                ivCapa.setImageBitmap(bitmap);
-                album.setCapa(Util.bitmapToBase64(bitmap));
-
+                if (capaAlterada == true) {
+                    album.setCapa(Util.bitmapToBase64(((BitmapDrawable)ivCapa.getDrawable()).getBitmap()));
+                    capaAlterada = false;
+                }
                 dao.salvar(album);
                 setResult(Activity.RESULT_OK);
                 break;
@@ -201,5 +219,25 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
             }
 
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == INTENT_IMAGE_CHOOSER){
+            if (data != null){
+                try {
+                    Uri capaURI = data.getData();
+                    Bitmap bitmap = Util.setPic(ivCapa.getWidth(), ivCapa.getHeight(), capaURI, this);
+                    ivCapa.setImageBitmap(bitmap);
+                    ivCapa.invalidate();
+                    capaAlterada = true;
+                } catch (IOException e){}
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

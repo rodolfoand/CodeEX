@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,19 +96,24 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
         tvArtista.setText(album.getArtista());
         tvNome.setText(album.getAlbum());
         tvGenero.setText(album.getGenero());
-        tvDtLancamento.setText(fmt.format(album.getDtLancamento()));
-
+        Date data = album.getDtLancamento();
+        if(data != null) {
+            tvDtLancamento.setText(fmt.format(data));
+        }
 
 
         try {
             ivCapa.setImageBitmap(Util.bitmapFromBase64(album.getCapa()));
         } catch (Exception e) {
-            Bitmap bitmap = Util.circularBitmapAndText(
-            ContextCompat.getColor(layout.getContext(), R.color.colorPrimary)
-                    , 200
-                    , 600
-                    , tvNome.getText().toString().substring(0,1).toUpperCase());
-            ivCapa.setImageBitmap(bitmap);
+            String nomeAlbum = tvNome.getText().toString();
+            if (!nomeAlbum.isEmpty()) {
+                Bitmap bitmap = Util.circularBitmapAndText(
+                        ContextCompat.getColor(layout.getContext(), R.color.colorPrimary)
+                        , 200
+                        , 600
+                        , nomeAlbum.substring(0, 1).toUpperCase());
+                ivCapa.setImageBitmap(bitmap);
+            }
         }
         //TODO: Ajustar apresentação de capa
 
@@ -122,6 +128,7 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
         if (editar) {
             cbApagar.setTag(album.getId());
             cbApagar.setOnClickListener(this);
+
         }
         return layout;
     }
@@ -172,6 +179,11 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
 
     public List<Long> getListaSelecionados(){
         return listaSelecionados;
+    }
+
+    public void setItemSelecionado(int pos){
+        posicao = pos;
+        notifyDataSetChanged();
     }
 
 }

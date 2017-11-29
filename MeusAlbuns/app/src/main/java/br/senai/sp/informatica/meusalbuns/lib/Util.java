@@ -1,14 +1,22 @@
 package br.senai.sp.informatica.meusalbuns.lib;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.net.Uri;
+import android.os.ParcelFileDescriptor;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.IOException;
+import java.io.InputStream;
 
 import br.senai.sp.informatica.meusalbuns.R;
 
@@ -46,6 +54,58 @@ public class Util {
     public static Bitmap bitmapFromBase64(byte[] dados) {
         byte[] fotoArray = Base64.decode(dados, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(fotoArray, 0, fotoArray.length);
+        return bitmap;
+    }
+    public static Bitmap setPic(int width, int height, Uri fotoUri, Context context) throws IOException {
+        return setFilePic(width,height,fotoUri,context);
+    }
+
+    private static Bitmap setFilePic(int width, int height, Object foto, Context context) throws IOException {
+        // Get the dimensions of the View
+        int targetW = width;
+        int targetH = height;
+
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+
+        Rect rect = new Rect(-1, -1, -1, -1);
+
+        InputStream is;
+        if(foto instanceof File) {
+            is = context.getContentResolver().openInputStream(Uri.fromFile((File)foto));
+        } else if(foto instanceof Uri) {
+            is = context.getContentResolver().openInputStream((Uri)foto);
+        } else {
+            throw new IOException("Invalid URI");
+        }
+
+        BitmapFactory.decodeStream(is, rect, bmOptions);
+        is.close();
+
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = 0;
+        if (targetH != 0 && targetW != 0)
+            scaleFactor = Math.min(photoW / targetW, photoH / targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        //bmOptions.inPurgeable = true;
+
+        Bitmap bitmap;
+        if(foto instanceof File) {
+            bitmap = BitmapFactory.decodeFile(foto.toString(), bmOptions);
+        } else {
+            ParcelFileDescriptor parcelFileDescriptor =
+                    context.getContentResolver().openFileDescriptor((Uri) foto, "r");
+            FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+            bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor, rect, bmOptions);
+            parcelFileDescriptor.close();
+        }
+
         return bitmap;
     }
 }
