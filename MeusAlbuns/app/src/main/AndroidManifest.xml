@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="br.senai.sp.informatica.meusalbuns">
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -10,18 +11,28 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".control.ListaAlbuns">
+
+        </activity>
+
+        <activity
+            android:name=".control.DetalheAlbum"
+            android:parentActivityName=".control.ListaAlbuns">
+
+        </activity>
+        <activity
+            android:name=".control.NavDrawAlbum"
+            android:label="@string/title_activity_nav_draw_album"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".control.DetalheAlbum"
-            android:parentActivityName=".control.ListaAlbuns">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".control.ListaAlbuns"/>
+                android:value=".control.ListaAlbuns" />
         </activity>
     </application>
 
