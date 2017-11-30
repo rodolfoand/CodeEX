@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -119,10 +120,11 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
 
         CheckBox cbApagar = (CheckBox)layout.findViewById(R.id.cbApagar);
 
-        if (posicao == position){
-            cbApagar.setChecked(!cbApagar.isChecked());
-            listaSelecionados.add(album.getId());
+        if (listaSelecionados.contains((long)position)){
+            cbApagar.setChecked(true);
+            //Toast.makeText(convertView.getContext(), ">> "+listaSelecionados, Toast.LENGTH_LONG).show();
             posicao = -1;
+
         }
 
         if (editar) {
@@ -142,8 +144,10 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         Long id = (Long)v.getTag();
-
-        listaSelecionados.add(id);
+        if (!listaSelecionados.contains(id)) {
+            listaSelecionados.add(id);
+        }
+        //Toast.makeText(v.getContext(), ">>2"+listaSelecionados, Toast.LENGTH_LONG).show();
         //Album album =  dao.getAlbum(id);
         //album.setAtivo(!album.isAtivo());
     }
@@ -158,32 +162,25 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
             editar = true;
         } else {
             editar = false;
-            listaSelecionados = new ArrayList<>();
         }
         alteraLayout = true;
+        listaSelecionados = new ArrayList<>();
         //dao.retiraSelecionados(listaSelecionados);
         notifyDataSetChanged();
     }
-    public void setLayout(TipoLista tipo, int pos){
-        if (tipo == TipoLista.EDITAR){
-            editar = true;
-        } else {
-            editar = false;
-            listaSelecionados = new ArrayList<>();
-        }
-        alteraLayout = true;
-        posicao = pos;
-        //dao.retiraSelecionados(listaSelecionados);
-        notifyDataSetChanged();
-    }
+
 
     public List<Long> getListaSelecionados(){
         return listaSelecionados;
     }
 
     public void setItemSelecionado(int pos){
+        listaSelecionados.add(mapa.get(pos));
         posicao = pos;
         notifyDataSetChanged();
+    }
+    public void limpaListaSelecionada(){
+        listaSelecionados = new ArrayList<>();
     }
 
 }

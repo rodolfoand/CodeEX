@@ -51,7 +51,7 @@ public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (edicao == true) {
+        if (!edicao) {
             Intent tela = new Intent(getBaseContext(), DetalheAlbum.class);
             tela.putExtra("id", id);
             startActivityForResult(tela, EDITA_ALBUM);
@@ -114,7 +114,9 @@ public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItem
     public void onClick(DialogInterface dialog, int which) {
         if (which == -1) {
             listaSelecionados = albumAdapter.getListaSelecionados();
+            Toast.makeText(this, ">> "+listaSelecionados, Toast.LENGTH_LONG).show();
             dao.retiraSelecionados(listaSelecionados);
+            albumAdapter.limpaListaSelecionada();
         }
         albumAdapter.setLayout(AlbumAdapter.TipoLista.APAGAR);
         miEditar.setVisible(true);
@@ -129,9 +131,11 @@ public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItem
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        albumAdapter.setLayout(AlbumAdapter.TipoLista.EDITAR, position);
+        albumAdapter.setLayout(AlbumAdapter.TipoLista.EDITAR);
+        //albumAdapter.setItemSelecionado(position);
         miEditar.setVisible(false);
         miApagar.setVisible(true);
+        edicao = true;
         return false;
     }
 }
