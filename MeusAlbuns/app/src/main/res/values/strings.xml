@@ -13,7 +13,7 @@
     <string name="ordem_sumario">Define a ordem como os albuns aparecerão na lista principal.</string>
     <string name="filtro_titulo">Filtro de Albuns</string>
     <string name="filtro_key">FILTRO_HABILITADO</string>
-    
+
     <string-array name="ordem_itens">
         <item>Banda</item>
         <item>Album</item>
