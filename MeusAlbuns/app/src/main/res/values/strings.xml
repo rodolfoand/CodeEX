@@ -6,4 +6,19 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string name="ordem_default">Banda</string>
+    <string name="ordem_titulo">Ordem dos Albuns</string>
+    <string name="ordem_key">ORDEM_DA_LISTA</string>
+    <string name="ordem_sumario">Define a ordem como os albuns aparecerão na lista principal.</string>
+    <string name="filtro_titulo">Filtro de Albuns</string>
+    <string name="filtro_key">FILTRO_HABILITADO</string>
+    
+    <string-array name="ordem_itens">
+        <item>Banda</item>
+        <item>Album</item>
+    </string-array>
+    <string name="preferencias">Preferências</string>
+
+
 </resources>
