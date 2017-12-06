@@ -11,16 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".control.ListaAlbuns">
-
-        </activity>
-
+        <activity android:name=".control.ListaAlbuns"></activity>
         <activity
             android:name=".control.DetalheAlbum"
-            android:parentActivityName=".control.ListaAlbuns">
-
-        </activity>
+            android:parentActivityName=".control.ListaAlbuns"></activity>
         <activity
             android:name=".control.NavDrawAlbum"
             android:label="@string/title_activity_nav_draw_album"
@@ -30,19 +24,26 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".control.ListaAlbuns" />
         </activity>
-
-        <activity android:name=".control.PreferenciasActivity"
-            android:parentActivityName=".control.NavDrawAlbum"
-            android:label="@string/preferencias">
+        <activity
+            android:name=".control.PreferenciasActivity"
+            android:label="@string/preferencias"
+            android:parentActivityName=".control.NavDrawAlbum">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".control.NavDrawAlbum" />
+        </activity>
+        <activity android:name=".control.Perfil"
+            android:label="Perfil"
+            android:parentActivityName=".control.NavDrawAlbum">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".control.NavDrawAlbum"/>
         </activity>
-
     </application>
 
 </manifest>
