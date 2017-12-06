@@ -34,6 +34,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".control.ListaAlbuns" />
         </activity>
+
+        <activity android:name=".control.PreferenciasActivity"
+            android:parentActivityName=".control.NavDrawAlbum"
+            android:label="@string/preferencias">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".control.NavDrawAlbum"/>
+        </activity>
+
     </application>
 
 </manifest>
