@@ -1,7 +1,10 @@
 package br.senai.sp.informatica.meusalbuns.control;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.preference.PreferenceManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -42,16 +45,24 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
 
     private int posicao = -1;
 
+    private Activity activity;
+
     public void criaMapa(){
         mapa = new HashMap<>();
-        List<Album> listaAlbuns =dao.getLista();
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        String ordem = preferences.getString(activity.getResources().getString(R.string.ordem_key), activity.getResources().getString(R.string.ordem_default));
+        Toast.makeText(activity, ordem, Toast.LENGTH_LONG).show();
+
+        List<Album> listaAlbuns = dao.getLista(ordem);
         for (int i = 0; i < listaAlbuns.size(); i++) {
             if (listaAlbuns.get(i).isAtivo()){
                 mapa.put(i,listaAlbuns.get(i).getId());
             }
         }
     }
-    public AlbumAdapter(){
+    public AlbumAdapter(Activity activity){
+        this.activity = activity;
         criaMapa();
     }
 

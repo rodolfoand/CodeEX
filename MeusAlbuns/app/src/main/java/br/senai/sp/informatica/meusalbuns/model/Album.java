@@ -1,5 +1,7 @@
 package br.senai.sp.informatica.meusalbuns.model;
 
+import android.support.annotation.NonNull;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -7,7 +9,7 @@ import java.util.Date;
  * Created by 34023325821 on 14/11/2017.
  */
 
-public class Album {
+public class Album implements Comparable<Album> {
     private Long id;
     private String album;
     private String artista;
@@ -102,5 +104,10 @@ public class Album {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    @Override
+    public int compareTo(@NonNull Album o) {
+        return artista.compareToIgnoreCase(o.artista);
     }
 }

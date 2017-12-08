@@ -43,7 +43,7 @@ public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItem
 
         listaAlbuns = (ListView)findViewById(R.id.listAlbuns);
 
-        albumAdapter = new AlbumAdapter();
+        //albumAdapter = new AlbumAdapter();
         listaAlbuns.setAdapter(albumAdapter);
         listaAlbuns.setOnItemClickListener(this);
         listaAlbuns.setOnItemLongClickListener(this);

@@ -2,7 +2,9 @@ package br.senai.sp.informatica.meusalbuns.control;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -14,7 +16,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -42,6 +46,12 @@ public class NavDrawAlbum extends AppCompatActivity
 
     private boolean edicao = false;
 
+    private TextView etNomeNav;
+    private TextView etEmailNav;
+
+    private static String NOME_PERFIL = "nome";
+    private static String EMAIL_PERFIL = "email";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,12 +78,24 @@ public class NavDrawAlbum extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View header = navigationView.getHeaderView(0);
+        etNomeNav = (TextView)header.findViewById(R.id.etNomeNav);
+        etEmailNav = (TextView)header.findViewById(R.id.etEmailNav);
+
         listaAlbuns = (ListView)findViewById(R.id.listAlbuns);
 
-        albumAdapter = new AlbumAdapter();
+        albumAdapter = new AlbumAdapter(this);
         listaAlbuns.setAdapter(albumAdapter);
         listaAlbuns.setOnItemClickListener(this);
         listaAlbuns.setOnItemLongClickListener(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        etNomeNav.setText(preferences.getString(NOME_PERFIL, ""));
+        etEmailNav.setText(preferences.getString(EMAIL_PERFIL,""));
     }
 
     @Override
@@ -116,7 +138,7 @@ public class NavDrawAlbum extends AppCompatActivity
 
         if (id == R.id.nav_preferencias) {
             Intent intent = new Intent(this, PreferenciasActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent, 25);
         } else if (id == R.id.nav_perfil) {
             Intent intent = new Intent(this, Perfil.class);
             startActivity(intent);
