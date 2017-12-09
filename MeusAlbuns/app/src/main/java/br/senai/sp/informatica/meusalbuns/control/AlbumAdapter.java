@@ -43,16 +43,21 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
 
     private List<Long> listaSelecionados = new ArrayList<>();
 
-    private int posicao = -1;
+    //private int posicao = -1;
 
     private Activity activity;
 
     public void criaMapa(){
         mapa = new HashMap<>();
+        String ordem = activity.getResources().getString(R.string.ordem_default);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(activity);
-        String ordem = preferences.getString(activity.getResources().getString(R.string.ordem_key), activity.getResources().getString(R.string.ordem_default));
-        Toast.makeText(activity, ordem, Toast.LENGTH_LONG).show();
+        boolean filtroHabilitado = preferences.getBoolean(activity.getResources().getString(R.string.filtro_key), false);
+
+        if (filtroHabilitado) {
+            ordem = preferences.getString(activity.getResources().getString(R.string.ordem_key), activity.getResources().getString(R.string.ordem_default));
+        }
+        //Toast.makeText(activity, ordem, Toast.LENGTH_LONG).show();
 
         List<Album> listaAlbuns = dao.getLista(ordem);
         for (int i = 0; i < listaAlbuns.size(); i++) {
@@ -131,11 +136,16 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
 
         CheckBox cbApagar = (CheckBox)layout.findViewById(R.id.cbApagar);
 
-        if (listaSelecionados.contains((long)position)){
-            cbApagar.setChecked(true);
-            //Toast.makeText(convertView.getContext(), ">> "+listaSelecionados, Toast.LENGTH_LONG).show();
-            posicao = -1;
+        if (listaSelecionados.size() > 0) {
+            if (listaSelecionados.contains(mapa.get(position))) {
+                //cbApagar.setChecked(true);
+                cbApagar.setChecked(true);
+                //Toast.makeText(convertView.getContext(), ">> " + listaSelecionados, Toast.LENGTH_LONG).show();
+                //posicao = -1;
 
+            } else {
+                cbApagar.setChecked(false);
+            }
         }
 
         if (editar) {
@@ -155,8 +165,10 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         Long id = (Long)v.getTag();
-        if (!listaSelecionados.contains(id)) {
-            listaSelecionados.add(id);
+        if (!listaSelecionados.contains(mapa.get(id))) {
+            listaSelecionados.add(mapa.get(id));
+        } else {
+            listaSelecionados.remove(mapa.get(id));
         }
         //Toast.makeText(v.getContext(), ">>2"+listaSelecionados, Toast.LENGTH_LONG).show();
         //Album album =  dao.getAlbum(id);
@@ -186,8 +198,12 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
     }
 
     public void setItemSelecionado(int pos){
-        listaSelecionados.add(mapa.get(pos));
-        posicao = pos;
+        if (!listaSelecionados.contains(mapa.get(pos))) {
+            listaSelecionados.add(mapa.get(pos));
+        } else {
+            listaSelecionados.remove(mapa.get(pos));
+        }
+        //posicao = pos;
         notifyDataSetChanged();
     }
     public void limpaListaSelecionada(){

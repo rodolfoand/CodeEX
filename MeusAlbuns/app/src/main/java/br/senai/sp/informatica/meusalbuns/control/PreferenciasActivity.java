@@ -6,6 +6,7 @@ import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import br.senai.sp.informatica.meusalbuns.R;
 
@@ -28,13 +29,18 @@ public class PreferenciasActivity extends AppCompatActivity {
             bar.setDisplayHomeAsUpEnabled(true);
         }
     }
-
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.home){
-            setResult(RESULT_OK);
+
+        switch (item.getItemId()){
+            case R.id.home:
+                setResult(RESULT_OK);
+                Toast.makeText(this, ">>", Toast.LENGTH_LONG);
+                break;
         }
-        finish();
+        //finish();
         return true;
     }
+    */
 }
