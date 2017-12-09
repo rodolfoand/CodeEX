@@ -1,5 +1,6 @@
 package br.senai.sp.informatica.meusalbuns.lib;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,15 +9,19 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
+import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import br.senai.sp.informatica.meusalbuns.R;
 
@@ -107,5 +112,30 @@ public class Util {
         }
 
         return bitmap;
+    }
+    /*
+     * Cria um arquivo temporário para armazenar a Foto
+     */
+    @SuppressLint("SimpleDateFormat")
+    public static File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        if (!storageDir.exists())
+            storageDir.mkdir();
+        try {
+            File image = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir      /* directory */
+            );
+
+            return image;
+        } catch (IOException ex) {
+            Log.e(imageFileName, storageDir.getPath(), ex);
+            throw new IOException(ex);
+        }
     }
 }

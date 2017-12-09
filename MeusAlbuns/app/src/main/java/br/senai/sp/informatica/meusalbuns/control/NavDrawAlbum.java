@@ -49,8 +49,10 @@ public class NavDrawAlbum extends AppCompatActivity
     private TextView etNomeNav;
     private TextView etEmailNav;
 
+    /*
     private static String NOME_PERFIL = "nome";
     private static String EMAIL_PERFIL = "email";
+    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +96,12 @@ public class NavDrawAlbum extends AppCompatActivity
     protected void onStart() {
         super.onStart();
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        /*
         etNomeNav.setText(preferences.getString(NOME_PERFIL, ""));
         etEmailNav.setText(preferences.getString(EMAIL_PERFIL,""));
+         */
+        etNomeNav.setText(preferences.getString(this.getResources().getString(R.string.nome_perfil_key), this.getResources().getString(R.string.nome_perfil_default)));
+        etEmailNav.setText(preferences.getString(this.getResources().getString(R.string.email_perfil_key),this.getResources().getString(R.string.email_perfil_default)));
     }
 
     @Override
@@ -221,11 +227,11 @@ public class NavDrawAlbum extends AppCompatActivity
     @Override
     public void onClick(DialogInterface dialog, int which) {
         if (which == -1) {
-            listaSelecionados = albumAdapter.getListaSelecionados();
-            Toast.makeText(this, ">> "+listaSelecionados, Toast.LENGTH_LONG).show();
+            //listaSelecionados = albumAdapter.getListaSelecionados();
+            //Toast.makeText(this, ">> "+listaSelecionados, Toast.LENGTH_LONG).show();
             dao.retiraSelecionados(listaSelecionados);
-            albumAdapter.limpaListaSelecionada();
         }
+        albumAdapter.limpaListaSelecionada();
         albumAdapter.setLayout(AlbumAdapter.TipoLista.APAGAR);
         miEditar.setVisible(true);
         miApagar.setVisible(false);
