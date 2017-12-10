@@ -25,6 +25,7 @@
     <string name="email_perfil_default">Sem email</string>
     <string name="nome_perfil_key">NOME_PERFIL</string>
     <string name="email_perfil_key">EMAIL_PERFIL</string>
+    <string name="foto_perfil_key">FOTO_PERFIL</string>
 
 
 </resources>
