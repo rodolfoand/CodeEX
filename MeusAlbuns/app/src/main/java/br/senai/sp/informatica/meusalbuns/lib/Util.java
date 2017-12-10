@@ -8,12 +8,16 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.ImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -137,5 +141,25 @@ public class Util {
             Log.e(imageFileName, storageDir.getPath(), ex);
             throw new IOException(ex);
         }
+    }
+
+    public static Bitmap bitmapFromImageView(ImageView view) {
+        Drawable drawable = view.getDrawable();
+        if (drawable != null) {
+            if (drawable instanceof ColorDrawable) {
+                return convertToBitmap(drawable, view.getWidth(), view.getHeight());
+            } else if (drawable instanceof BitmapDrawable) {
+                return ((BitmapDrawable) drawable).getBitmap();
+            }
+        }
+        return null;
+    }
+    private static Bitmap convertToBitmap(Drawable drawable, int widthPixels, int heightPixels) {
+        Bitmap mutableBitmap = Bitmap.createBitmap(widthPixels, heightPixels, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(mutableBitmap);
+        drawable.setBounds(0, 0, widthPixels, heightPixels);
+        drawable.draw(canvas);
+
+        return mutableBitmap;
     }
 }

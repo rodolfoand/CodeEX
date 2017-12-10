@@ -209,7 +209,7 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
 
         if (intent.resolveActivity(getPackageManager()) != null){
             if ((ContextCompat.checkSelfPermission(getBaseContext()
-                    , android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)){
+                  , android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)){
                 ActivityCompat.requestPermissions(this
                         , new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}
                         , REQUEST_PERMISSION_EX_STORAGE);

@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
@@ -28,17 +29,21 @@ import java.io.IOException;
 import br.senai.sp.informatica.meusalbuns.R;
 import br.senai.sp.informatica.meusalbuns.lib.Util;
 
-public class Perfil extends AppCompatActivity {
-        //implements View.OnClickListener {
+public class Perfil extends AppCompatActivity //{
+        implements View.OnClickListener {
     private EditText etNomePerfil;
     private EditText etEmailPerfil;
     private ImageView ivPerfil;
 
     private File fotoUrl;
 
+    private static final int REQUEST_PERMISSION_EX_STORAGE = 100;
+    private static final int INTENT_IMAGE_CHOOSER = 101;
+
+    /*
     private static final int REQUEST_PERMISSION_CAMERA = 0;
     private static final int INTENT_IMAGE_CAPTURE = 1;
-
+    */
     /*
     private static String NOME_PERFIL = "nome";
     private static String EMAIL_PERFIL = "email";
@@ -52,7 +57,7 @@ public class Perfil extends AppCompatActivity {
         etEmailPerfil = (EditText)findViewById(R.id.etEmailPerfil);
         ivPerfil = (ImageView)findViewById(R.id.ivPerfil);
 
-        //ivPerfil.setOnClickListener(this);
+        ivPerfil.setOnClickListener(this);
 
         ActionBar actionBar = getActionBar();
         if (actionBar != null){
@@ -71,6 +76,12 @@ public class Perfil extends AppCompatActivity {
         */
         etNomePerfil.setText(preferences.getString(this.getResources().getString(R.string.nome_perfil_key),this.getResources().getString(R.string.nome_perfil_default)));
         etEmailPerfil.setText(preferences.getString(this.getResources().getString(R.string.email_perfil_key),this.getResources().getString(R.string.email_perfil_default)));
+
+        String fotoString = preferences.getString(this.getResources().getString(R.string.foto_perfil_key), null);
+        if (fotoString != null){
+            Bitmap bitmap = Util.bitmapFromBase64(fotoString.getBytes());
+            ivPerfil.setImageBitmap(bitmap);
+        }
     }
 
     @Override
@@ -89,6 +100,15 @@ public class Perfil extends AppCompatActivity {
                 editor.putString(this.getResources().getString(R.string.nome_perfil_key), etNomePerfil.getText().toString());
                 editor.putString(this.getResources().getString(R.string.email_perfil_key), etEmailPerfil.getText().toString());
 
+                Bitmap bitmap = Util.bitmapFromImageView(ivPerfil);
+                if (bitmap != null){
+                    editor.putString(this.getResources().getString(R.string.foto_perfil_key)
+                            ,new String(Util.bitmapToBase64(bitmap)));
+                } else {
+                    editor.putString(this.getResources().getString(R.string.foto_perfil_key)
+                            , null);
+                }
+
                 editor.apply();
                 setResult(RESULT_OK);
                 break;
@@ -96,6 +116,44 @@ public class Perfil extends AppCompatActivity {
         finish();
         return true;
     }
+
+    @Override
+    public void onClick(View v) {
+        getImagemGaleria();
+    }
+    public void getImagemGaleria(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        if (intent.resolveActivity(getPackageManager()) != null){
+            if ((ContextCompat.checkSelfPermission(getBaseContext()
+                    , android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)){
+                ActivityCompat.requestPermissions(this
+                        , new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}
+                        , REQUEST_PERMISSION_EX_STORAGE);
+            } else {
+                startActivityForResult(Intent.createChooser(intent, "Selecione a imagem para capa")
+                        , INTENT_IMAGE_CHOOSER);
+            }
+
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == INTENT_IMAGE_CHOOSER){
+            if (data != null){
+                try {
+                    Uri perfilURI = data.getData();
+                    Bitmap bitmap = Util.setPic(ivPerfil.getWidth(), ivPerfil.getHeight(), perfilURI, this);
+                    ivPerfil.setImageBitmap(bitmap);
+                    ivPerfil.invalidate();
+                } catch (IOException e) {}
+            }
+        }
+    }
+
     /*
     @Override
     public void onClick(View v) {
