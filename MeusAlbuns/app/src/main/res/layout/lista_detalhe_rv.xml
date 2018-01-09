@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+
+    <TextView
+        android:id="@+id/tvArtistaRv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Artista" />
+
+    <TextView
+        android:id="@+id/tvAlbumRv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Album" />
+
+    <TextView
+        android:id="@+id/tvGeneroRv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Genero" />
+
+    <TextView
+        android:id="@+id/tvLancamentoRv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lancamento" />
+</LinearLayout>

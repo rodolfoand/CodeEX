@@ -14,7 +14,6 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -104,7 +103,7 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
 
         TextView tvArtista = layout.findViewById(R.id.etArtista);
         TextView tvNome = layout.findViewById(R.id.tvNome);
-        TextView tvGenero = layout.findViewById(R.id.tvGenero);
+        TextView tvGenero = layout.findViewById(R.id.tvGeneroRv);
         TextView tvDtLancamento = layout.findViewById(R.id.tvDtLancamento);
         ImageView ivCapa = layout.findViewById(R.id.ivCapa);
 

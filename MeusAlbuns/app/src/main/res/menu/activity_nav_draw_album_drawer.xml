@@ -11,16 +11,19 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="Perfil" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_recyclerview"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:title="RecyclerView" />
         <item
             android:id="@+id/nav_manage"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Tools"
+            android:visible="false" />
     </group>
 
-    <item android:title="Communicate">
+    <item
+        android:title="Communicate"
+        android:visible="false">
         <menu>
             <item
                 android:id="@+id/nav_share"

@@ -149,7 +149,9 @@ public class NavDrawAlbum extends AppCompatActivity
             Intent intent = new Intent(this, Perfil.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_recyclerview) {
+            Intent intent = new Intent(this, ListaAlbunsRecycler.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_manage) {
 

@@ -3,8 +3,8 @@
     package="br.senai.sp.informatica.meusalbuns">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,10 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".control.ListaAlbuns"></activity>
+        <activity android:name=".control.ListaAlbuns" />
         <activity
             android:name=".control.DetalheAlbum"
-            android:parentActivityName=".control.ListaAlbuns"></activity>
+            android:parentActivityName=".control.ListaAlbuns" />
         <activity
             android:name=".control.NavDrawAlbum"
             android:label="@string/title_activity_nav_draw_album"
@@ -39,8 +39,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".control.NavDrawAlbum" />
         </activity>
-        <activity android:name=".control.Perfil"
+        <activity
+            android:name=".control.Perfil"
             android:label="Perfil"
+            android:parentActivityName=".control.NavDrawAlbum">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".control.NavDrawAlbum" />
+        </activity>
+        <activity android:name=".control.ListaAlbunsRecycler"
+            android:label="RecyclerView"
             android:parentActivityName=".control.NavDrawAlbum">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

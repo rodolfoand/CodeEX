@@ -38,7 +38,7 @@
         app:layout_constraintTop_toBottomOf="@+id/etArtista" />
 
     <TextView
-        android:id="@+id/tvGenero"
+        android:id="@+id/tvGeneroRv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
@@ -56,7 +56,7 @@
         android:layout_marginTop="8dp"
         android:text="Lancamento"
         app:layout_constraintLeft_toRightOf="@+id/ivCapa"
-        app:layout_constraintTop_toBottomOf="@+id/tvGenero" />
+        app:layout_constraintTop_toBottomOf="@+id/tvGeneroRv" />
 
     <CheckBox
         android:id="@+id/cbApagar"
