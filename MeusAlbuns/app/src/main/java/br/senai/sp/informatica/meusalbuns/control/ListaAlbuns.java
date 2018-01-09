@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +16,7 @@ import java.util.List;
 
 import br.senai.sp.informatica.meusalbuns.R;
 import br.senai.sp.informatica.meusalbuns.model.AlbumDao;
+import br.senai.sp.informatica.meusalbuns.view.adapter.AlbumAdapter;
 
 public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItemClickListener
         ,DialogInterface.OnClickListener

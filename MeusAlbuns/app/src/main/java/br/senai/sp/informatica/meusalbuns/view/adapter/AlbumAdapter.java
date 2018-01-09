@@ -1,4 +1,4 @@
-package br.senai.sp.informatica.meusalbuns.control;
+package br.senai.sp.informatica.meusalbuns.view.adapter;
 
 import android.app.Activity;
 import android.content.Context;

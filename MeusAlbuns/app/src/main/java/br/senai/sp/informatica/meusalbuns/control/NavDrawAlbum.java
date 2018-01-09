@@ -16,15 +16,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
 import br.senai.sp.informatica.meusalbuns.R;
 import br.senai.sp.informatica.meusalbuns.model.AlbumDao;
+import br.senai.sp.informatica.meusalbuns.view.adapter.AlbumAdapter;
 
 public class NavDrawAlbum extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
@@ -57,6 +56,7 @@ public class NavDrawAlbum extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_nav_draw_album);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
