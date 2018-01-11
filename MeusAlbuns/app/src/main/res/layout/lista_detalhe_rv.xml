@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:selectableItemBackground"
     android:clickable="true"
@@ -10,27 +12,40 @@
     android:padding="16dp">
 
 
+    <ImageView
+        android:id="@+id/ivCapaRv"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        app:srcCompat="@android:drawable/ic_menu_report_image" />
+
     <TextView
         android:id="@+id/tvArtistaRv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Artista" />
+        android:text="Artista"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
     <TextView
         android:id="@+id/tvAlbumRv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Album" />
+        android:text="Album"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption" />
 
     <TextView
         android:id="@+id/tvGeneroRv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Genero" />
+        android:text="Genero"
+        android:textAlignment="center"/>
 
     <TextView
         android:id="@+id/tvLancamentoRv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Lancamento" />
+        android:text="Lancamento"
+        android:textAlignment="center"/>
+
 </LinearLayout>

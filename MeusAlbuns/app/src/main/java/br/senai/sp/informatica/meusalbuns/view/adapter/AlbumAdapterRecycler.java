@@ -45,4 +45,10 @@ public class AlbumAdapterRecycler extends RecyclerView.Adapter {
     public int getItemCount() {
         return albumList.size();
     }
+
+    public void removerItem(int position){
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, getItemCount());
+    }
+
 }

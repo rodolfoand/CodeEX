@@ -32,7 +32,7 @@
         //TODO: Ajustar condicional
 -->
     <include layout="@layout/lista_albuns"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
     <include layout="@layout/lista_albuns_rv2"
         android:visibility="visible"/>
 

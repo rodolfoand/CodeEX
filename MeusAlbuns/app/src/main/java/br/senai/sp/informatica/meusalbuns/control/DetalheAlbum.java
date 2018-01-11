@@ -145,6 +145,8 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
                     capaAlterada = false;
                 }
                 dao.salvar(album);
+                //Intent intent = new Intent(this, DetalheAlbum.class);
+                //intent.putExtra("id", album.getId());
                 setResult(Activity.RESULT_OK);
                 break;
         }

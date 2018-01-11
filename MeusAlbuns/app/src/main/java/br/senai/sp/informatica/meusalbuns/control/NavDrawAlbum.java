@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -54,8 +55,11 @@ public class NavDrawAlbum extends AppCompatActivity
     private TextView etEmailNav;
 
     private String tipoLista;
+    private String ordemLista;
 
     private RecyclerView rvListaAlbuns;
+
+    private AlbumAdapterRecycler albumAdapterRecycler;
 
     /*
     private static String NOME_PERFIL = "nome";
@@ -93,14 +97,17 @@ public class NavDrawAlbum extends AppCompatActivity
         etNomeNav = (TextView)header.findViewById(R.id.etNomeNav);
         etEmailNav = (TextView)header.findViewById(R.id.etEmailNav);
 
+        listaAlbuns = (ListView)findViewById(R.id.listAlbuns);
+        rvListaAlbuns = (RecyclerView)findViewById(R.id.rvListaAlbuns);
 
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        tipoLista = preferences.getString(this.getResources().getString(R.string.lista_key), this.getResources().getString(R.string.lista_default));
+        ordemLista = preferences.getString(this.getResources().getString(R.string.ordem_key),this.getResources().getString(R.string.ordem_default));
 
-        tipoLista = preferences.getString(this.getResources().getString(R.string.lista_key)
-                , this.getResources().getString(R.string.lista_default));
         if (tipoLista.equals("ListView")){
-            listaAlbuns = (ListView)findViewById(R.id.listAlbuns);
+            rvListaAlbuns.setVisibility(View.GONE);
+
 
             albumAdapter = new AlbumAdapter(this);
             listaAlbuns.setAdapter(albumAdapter);
@@ -108,16 +115,10 @@ public class NavDrawAlbum extends AppCompatActivity
             listaAlbuns.setOnItemLongClickListener(this);
         }
         if (tipoLista.equals("RecyclerView")){
-            rvListaAlbuns = (RecyclerView)findViewById(R.id.rvListaAlbuns);
+            listaAlbuns.setVisibility(View.GONE);
 
-            List<Album> albumList = dao.getLista("Album");
 
-            rvListaAlbuns.setAdapter(new AlbumAdapterRecycler(albumList, this));
-
-            //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            //rvAlbuns.setLayoutManager(layoutManager);
-            StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-            rvListaAlbuns.setLayoutManager(staggeredGridLayoutManager);
+            carregarListaAlbuns();
         }
         Log.d("Lista",tipoLista);
     }
@@ -209,7 +210,15 @@ public class NavDrawAlbum extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK){
-            albumAdapter.notifyDataSetChanged();
+            if (tipoLista.equals("ListView")){
+                albumAdapter.notifyDataSetChanged();
+            }
+
+            if (tipoLista.equals("RecyclerView")){
+                carregarListaAlbuns();
+            }
+
+
         }
     }
 
@@ -220,6 +229,7 @@ public class NavDrawAlbum extends AppCompatActivity
         miEditar = (MenuItem)menu.findItem(R.id.mi_lis_editar);
         miApagar = (MenuItem)menu.findItem(R.id.mi_lis_apagar);
         miApagar.setVisible(false);
+        miEditar.setVisible(false);
 
         return true;
     }
@@ -284,4 +294,16 @@ public class NavDrawAlbum extends AppCompatActivity
         edicao = true;
         return false;
     }
+
+    public void carregarListaAlbuns(){
+        List<Album> albumList = dao.getLista(ordemLista);
+
+        rvListaAlbuns.setAdapter(new AlbumAdapterRecycler(albumList, this));
+
+        //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        //rvAlbuns.setLayoutManager(layoutManager);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        rvListaAlbuns.setLayoutManager(staggeredGridLayoutManager);
+    }
+
 }
