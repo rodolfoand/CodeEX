@@ -39,7 +39,7 @@ public class ListaAlbuns extends AppCompatActivity implements AdapterView.OnItem
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_lista_albuns);
+        setContentView(R.layout.lista_albuns);
 
         listaAlbuns = (ListView)findViewById(R.id.listAlbuns);
 

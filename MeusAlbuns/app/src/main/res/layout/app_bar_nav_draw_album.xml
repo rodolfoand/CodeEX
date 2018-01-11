@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="br.senai.sp.informatica.meusalbuns.control.NavDrawAlbum">
 
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,8 +20,21 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
     </android.support.design.widget.AppBarLayout>
+<!--
+    <include layout="@layout/lista_albuns" />
 
-    <include layout="@layout/layout_lista_albuns" />
+    <include layout="@{@string/lista_key == @string/lista_key ? @layout/lista_albuns : @layout/lista_albuns_rv2}" />
+
+    <include layout="@layout/lista_albuns"
+        android:visibility="gone"/>
+    <include layout="@layout/lista_albuns_rv2"
+        android:visibility="visible"/>
+        //TODO: Ajustar condicional
+-->
+    <include layout="@layout/lista_albuns"
+        android:visibility="gone"/>
+    <include layout="@layout/lista_albuns_rv2"
+        android:visibility="visible"/>
 
 
     <android.support.design.widget.FloatingActionButton

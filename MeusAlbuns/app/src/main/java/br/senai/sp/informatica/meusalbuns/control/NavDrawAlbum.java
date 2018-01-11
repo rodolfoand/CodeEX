@@ -6,6 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,8 +25,10 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.senai.sp.informatica.meusalbuns.R;
+import br.senai.sp.informatica.meusalbuns.model.Album;
 import br.senai.sp.informatica.meusalbuns.model.AlbumDao;
 import br.senai.sp.informatica.meusalbuns.view.adapter.AlbumAdapter;
+import br.senai.sp.informatica.meusalbuns.view.adapter.AlbumAdapterRecycler;
 
 public class NavDrawAlbum extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
@@ -47,6 +52,10 @@ public class NavDrawAlbum extends AppCompatActivity
 
     private TextView etNomeNav;
     private TextView etEmailNav;
+
+    private String tipoLista;
+
+    private RecyclerView rvListaAlbuns;
 
     /*
     private static String NOME_PERFIL = "nome";
@@ -84,12 +93,33 @@ public class NavDrawAlbum extends AppCompatActivity
         etNomeNav = (TextView)header.findViewById(R.id.etNomeNav);
         etEmailNav = (TextView)header.findViewById(R.id.etEmailNav);
 
-        listaAlbuns = (ListView)findViewById(R.id.listAlbuns);
 
-        albumAdapter = new AlbumAdapter(this);
-        listaAlbuns.setAdapter(albumAdapter);
-        listaAlbuns.setOnItemClickListener(this);
-        listaAlbuns.setOnItemLongClickListener(this);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        tipoLista = preferences.getString(this.getResources().getString(R.string.lista_key)
+                , this.getResources().getString(R.string.lista_default));
+        if (tipoLista.equals("ListView")){
+            listaAlbuns = (ListView)findViewById(R.id.listAlbuns);
+
+            albumAdapter = new AlbumAdapter(this);
+            listaAlbuns.setAdapter(albumAdapter);
+            listaAlbuns.setOnItemClickListener(this);
+            listaAlbuns.setOnItemLongClickListener(this);
+        }
+        if (tipoLista.equals("RecyclerView")){
+            rvListaAlbuns = (RecyclerView)findViewById(R.id.rvListaAlbuns);
+
+            List<Album> albumList = dao.getLista("Album");
+
+            rvListaAlbuns.setAdapter(new AlbumAdapterRecycler(albumList, this));
+
+            //RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            //rvAlbuns.setLayoutManager(layoutManager);
+            StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            rvListaAlbuns.setLayoutManager(staggeredGridLayoutManager);
+        }
+        Log.d("Lista",tipoLista);
     }
 
     @Override

@@ -13,4 +13,11 @@
         android:defaultValue="false"
         android:key="@string/filtro_key"
         android:title="@string/filtro_titulo" />
+    <ListPreference
+        android:defaultValue="@string/lista_default"
+        android:entries="@array/lista_itens"
+        android:entryValues="@array/lista_itens"
+        android:key="@string/lista_key"
+        android:summary="@string/lista_sumario"
+        android:title="@string/lista_titulo" />
 </PreferenceScreen>

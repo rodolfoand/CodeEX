@@ -16,6 +16,16 @@
         <item>Album</item>
     </string-array>
 
+    <string name="lista_default">ListView</string>
+    <string name="lista_titulo">Modo de lista</string>
+    <string name="lista_key">MODO_DE_LISTA</string>
+    <string name="lista_sumario">Define a estrutura interna para estruturação da lista principal.</string>
+    <string-array name="lista_itens">
+        <item>RecyclerView</item>
+        <item>ListView</item>
+    </string-array>
+
+
     <string name="filtro_titulo">Filtro de Albuns</string>
     <string name="filtro_key">FILTRO_HABILITADO</string>
 

@@ -93,9 +93,9 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
             LayoutInflater inflater = (LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             layout = new ConstraintLayout(ctx);
             if (!editar){
-                inflater.inflate(R.layout.layout_lista_detalhe, layout);
+                inflater.inflate(R.layout.lista_detalhe, layout);
             } else {
-                inflater.inflate(R.layout.layout_lista_detalhe_edit, layout);
+                inflater.inflate(R.layout.lista_detalhe_edit, layout);
             }
         } else {
             layout = (ConstraintLayout)convertView;
@@ -174,7 +174,7 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
         //album.setAtivo(!album.isAtivo());
     }
 
-    enum TipoLista {
+    public enum TipoLista {
         EDITAR,
         APAGAR;
     }
