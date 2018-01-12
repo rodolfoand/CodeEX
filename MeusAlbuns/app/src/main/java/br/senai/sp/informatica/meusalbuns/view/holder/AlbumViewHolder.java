@@ -13,6 +13,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +41,8 @@ public class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnC
     private AlbumDao dao = AlbumDao.manager;
 
     private final int EDITA_ALBUM = 0;
+
+    private static DateFormat fmt = DateFormat.getDateInstance(DateFormat.LONG);
 
     public AlbumViewHolder(View itemView, AlbumAdapterRecycler adapterHolder) {
         super(itemView);

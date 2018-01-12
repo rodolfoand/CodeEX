@@ -3,9 +3,11 @@ package br.senai.sp.informatica.meusalbuns.control;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
@@ -30,6 +32,7 @@ import br.senai.sp.informatica.meusalbuns.model.Album;
 import br.senai.sp.informatica.meusalbuns.model.AlbumDao;
 import br.senai.sp.informatica.meusalbuns.view.adapter.AlbumAdapter;
 import br.senai.sp.informatica.meusalbuns.view.adapter.AlbumAdapterRecycler;
+import br.senai.sp.informatica.meusalbuns.view.adapter.AlbumAdapterRecyclerCard;
 
 public class NavDrawAlbum extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
@@ -59,7 +62,14 @@ public class NavDrawAlbum extends AppCompatActivity
 
     private RecyclerView rvListaAlbuns;
 
+
     private AlbumAdapterRecycler albumAdapterRecycler;
+
+    private AdapterInterface adapterInterface;
+    private AlbumAdapterRecyclerCard albumAdapterRecyclerCard;
+
+    private RecyclerView.LayoutManager layoutManager3;
+    private RecyclerView.LayoutManager layoutManager5;
 
     /*
     private static String NOME_PERFIL = "nome";
@@ -74,16 +84,7 @@ public class NavDrawAlbum extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabAdicionar);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        */
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -100,11 +101,38 @@ public class NavDrawAlbum extends AppCompatActivity
         listaAlbuns = (ListView)findViewById(R.id.listAlbuns);
         rvListaAlbuns = (RecyclerView)findViewById(R.id.rvListaAlbuns);
 
+        albumAdapter = new AlbumAdapter(this);
+        listaAlbuns.setOnItemClickListener(this);
+        listaAlbuns.setOnItemLongClickListener(this);
+
+        albumAdapterRecyclerCard = new AlbumAdapterRecyclerCard(this, this);
+
+        layoutManager3 = new GridLayoutManager(this, 3);
+        layoutManager5 = new GridLayoutManager(this, 5);
+
+        rvListaAlbuns.setHasFixedSize(true);
+        setGridOrientation(rvListaAlbuns);
+
+
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         tipoLista = preferences.getString(this.getResources().getString(R.string.lista_key), this.getResources().getString(R.string.lista_default));
         ordemLista = preferences.getString(this.getResources().getString(R.string.ordem_key),this.getResources().getString(R.string.ordem_default));
 
+        /*
+        //Expressao default da inclusao do Navigation Drawer
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabAdicionar);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+        */
+
+        /*
+        //Condicional do modo da lista sem utilizar Interface para o controle
         if (tipoLista.equals("ListView")){
             rvListaAlbuns.setVisibility(View.GONE);
 
@@ -116,11 +144,11 @@ public class NavDrawAlbum extends AppCompatActivity
         }
         if (tipoLista.equals("RecyclerView")){
             listaAlbuns.setVisibility(View.GONE);
-
-
             carregarListaAlbuns();
         }
-        Log.d("Lista",tipoLista);
+        //Log.d("Lista",tipoLista);
+        */
+
     }
 
     @Override
@@ -133,6 +161,33 @@ public class NavDrawAlbum extends AppCompatActivity
          */
         etNomeNav.setText(preferences.getString(this.getResources().getString(R.string.nome_perfil_key), this.getResources().getString(R.string.nome_perfil_default)));
         etEmailNav.setText(preferences.getString(this.getResources().getString(R.string.email_perfil_key),this.getResources().getString(R.string.email_perfil_default)));
+
+        String tipo = preferences.getString(this.getResources().getString(R.string.lista_key),this.getResources().getString(R.string.lista_default));
+
+        if (tipo.equals("ListView")){
+            rvListaAlbuns.setVisibility(View.GONE);
+
+            listaAlbuns.setAdapter(albumAdapter);
+            listaAlbuns.setOnItemClickListener(this);
+            listaAlbuns.setOnItemLongClickListener(this);
+
+            adapterInterface = albumAdapter;
+
+            rvListaAlbuns.setAdapter(null);
+            adapterInterface.notificaAtualizacao();
+        }
+        if (tipo.equals("RecyclerView(CardView)")){
+            listaAlbuns.setVisibility(View.GONE);
+
+            rvListaAlbuns.setAdapter(albumAdapterRecyclerCard);
+            adapterInterface = albumAdapterRecyclerCard;
+            adapterInterface.notificaAtualizacao();
+        }
+        if (tipo.equals("RecyclerView")){
+            listaAlbuns.setVisibility(View.GONE);
+            carregarListaAlbuns();
+        }
+
     }
 
     @Override
@@ -306,4 +361,20 @@ public class NavDrawAlbum extends AppCompatActivity
         rvListaAlbuns.setLayoutManager(staggeredGridLayoutManager);
     }
 
+    private void setGridOrientation(RecyclerView recyclerView){
+        int orientacao = getResources().getConfiguration().orientation;
+        if (orientacao == Configuration.ORIENTATION_PORTRAIT){
+            recyclerView.setLayoutManager(layoutManager3);
+        } else {
+            recyclerView.setLayoutManager(layoutManager5);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (adapterInterface instanceof RecyclerView){
+            setGridOrientation(rvListaAlbuns);
+        }
+    }
 }

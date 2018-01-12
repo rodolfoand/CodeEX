@@ -100,10 +100,13 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
                         ivCapa.setImageBitmap(Util.bitmapFromBase64(album.getCapa()));
                     } catch (Exception e) {
                         String nomeAlbum = etAlbum.getText().toString();
+                        Bitmap bitmap;
                         if (!nomeAlbum.isEmpty()) {
-                            Bitmap bitmap = getBitmapLetra(nomeAlbum);
-                            ivCapa.setImageBitmap(bitmap);
+                            bitmap = getBitmapLetra(nomeAlbum);
+                        }else {
+                            bitmap = getBitmapLetra("A");
                         }
+                        ivCapa.setImageBitmap(bitmap);
                     }
 
                 }

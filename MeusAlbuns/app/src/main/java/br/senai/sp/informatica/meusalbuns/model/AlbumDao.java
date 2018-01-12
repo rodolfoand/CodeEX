@@ -23,8 +23,8 @@ public class AlbumDao {
 
         //Criação de albuns para apresentação
         //TODO: ajustar criação de capa
-        lista.add(new Album(id++, "Novo Album4", id + "Novo Artista", "Novo Genero", Calendar.getInstance().getTime(), true));
-        lista.add(new Album(id++, "Novo Album3", id + "Novo Artista", "Novo Genero2", Calendar.getInstance().getTime(), true));
+        lista.add(new Album(id++, "System of a Down", "System of a Down", "Rock", Calendar.getInstance().getTime(), true));
+        lista.add(new Album(id++, "Iowa", "Slipknot", "Rock", Calendar.getInstance().getTime(), true));
         lista.add(new Album(id++, "Novo Album2", id + "Novo Artista", "Novo Genero3", Calendar.getInstance().getTime(), true));
         lista.add(new Album(id++, "Novo Album1", id + "Novo Artista", "Novo Genero4", Calendar.getInstance().getTime(), true));
         /*

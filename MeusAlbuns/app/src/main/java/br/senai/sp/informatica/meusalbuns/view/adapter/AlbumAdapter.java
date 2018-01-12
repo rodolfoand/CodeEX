@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import br.senai.sp.informatica.meusalbuns.R;
+import br.senai.sp.informatica.meusalbuns.control.AdapterInterface;
 import br.senai.sp.informatica.meusalbuns.lib.Util;
 import br.senai.sp.informatica.meusalbuns.model.Album;
 import br.senai.sp.informatica.meusalbuns.model.AlbumDao;
@@ -31,12 +32,13 @@ import br.senai.sp.informatica.meusalbuns.model.AlbumDao;
  * Created by 34023325821 on 16/11/2017.
  */
 
-public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
+public class AlbumAdapter extends BaseAdapter implements View.OnClickListener, AdapterInterface{
     private AlbumDao dao = AlbumDao.manager;
     private Map<Integer, Long> mapa;
 
     private boolean alteraLayout = false;
     private boolean editar = false;
+    private boolean editarInterface;
 
     private static DateFormat fmt = DateFormat.getDateInstance(DateFormat.LONG);
 
@@ -93,9 +95,9 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
             LayoutInflater inflater = (LayoutInflater)ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             layout = new ConstraintLayout(ctx);
             if (!editar){
-                inflater.inflate(R.layout.lista_detalhe, layout);
+                inflater.inflate(R.layout.item_lista, layout);
             } else {
-                inflater.inflate(R.layout.lista_detalhe_edit, layout);
+                inflater.inflate(R.layout.item_lista_edit, layout);
             }
         } else {
             layout = (ConstraintLayout)convertView;
@@ -172,6 +174,18 @@ public class AlbumAdapter extends BaseAdapter implements View.OnClickListener{
         //Toast.makeText(v.getContext(), ">>2"+listaSelecionados, Toast.LENGTH_LONG).show();
         //Album album =  dao.getAlbum(id);
         //album.setAtivo(!album.isAtivo());
+    }
+
+    @Override
+    public void setEditar(boolean value) {
+        editarInterface = value;
+        notificaAtualizacao();
+    }
+
+    @Override
+    public void notificaAtualizacao() {
+        criaMapa();
+        notifyDataSetChanged();
     }
 
     public enum TipoLista {
