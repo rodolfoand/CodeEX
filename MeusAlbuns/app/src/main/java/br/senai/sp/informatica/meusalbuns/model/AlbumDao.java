@@ -1,5 +1,6 @@
 package br.senai.sp.informatica.meusalbuns.model;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class AlbumDao {
     private List<Album> lista;
     private long id = 0;
     private String ordem = "Banda";
+
 
     private AlbumDao(){
         lista = new ArrayList<>();
