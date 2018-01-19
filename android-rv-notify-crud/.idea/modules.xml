@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/android-rv-notify-crud.iml" filepath="$PROJECT_DIR$/android-rv-notify-crud.iml" />
+      <module fileurl="file://C:\Users\rodol\Documents\MobileB\CodeEX\android-rv-notify-crud\android-rv-notify-crud.iml" filepath="C:\Users\rodol\Documents\MobileB\CodeEX\android-rv-notify-crud\android-rv-notify-crud.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\rodol\Documents\MobileB\CodeEX\android-rv-notify-crud\app\app.iml" filepath="C:\Users\rodol\Documents\MobileB\CodeEX\android-rv-notify-crud\app\app.iml" />
     </modules>
   </component>
 </project>
