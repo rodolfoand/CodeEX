@@ -33,7 +33,7 @@ public class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     private final int EDITA_ALBUM = 0;
 
-    private final static DateFormat fmt = DateFormat.getDateInstance(DateFormat.LONG);
+    private final static DateFormat fmt = DateFormat.getDateInstance(DateFormat.SHORT);
 
     public AlbumViewHolder(View itemView, AlbumAdapterRecycler adapterRecycler) {
         super(itemView);
@@ -53,7 +53,9 @@ public class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnC
         artista.setText(album.getArtista());
         nome.setText(album.getNome());
         genero.setText(album.getGenero());
-        data.setText(fmt.format(album.getDtLancamento()));
+        if (album.getDtLancamento() != null) {
+            data.setText(fmt.format(album.getDtLancamento()));
+        }
         //TODO: Data e capa
 
 

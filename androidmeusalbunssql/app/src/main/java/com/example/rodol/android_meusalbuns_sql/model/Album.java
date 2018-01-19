@@ -2,6 +2,7 @@ package com.example.rodol.android_meusalbuns_sql.model;
 
 import android.support.annotation.NonNull;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**

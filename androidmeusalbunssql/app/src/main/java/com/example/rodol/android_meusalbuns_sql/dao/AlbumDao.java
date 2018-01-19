@@ -9,8 +9,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.example.rodol.android_meusalbuns_sql.model.Album;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,7 +26,8 @@ public class AlbumDao {
     private SQLiteDatabase db;
     private AlbumDBHelper dbo;
 
-    private static DateFormat fmt = DateFormat.getDateInstance(DateFormat.LONG);
+    private static DateFormat fmt = DateFormat.getDateInstance(DateFormat.SHORT);
+    private final SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public AlbumDao(Context context) {
         dbo = new AlbumDBHelper(context);
@@ -41,6 +45,7 @@ public class AlbumDao {
             album.setArtista(cursor.getString(1));
             album.setNome(cursor.getString(2));
             album.setGenero(cursor.getString(3));
+            album.setDtLancamento(new Date(cursor.getLong(4)));
             //TODO: Preencher ativo, data e capa
             albuns.add(album);
         }
@@ -72,6 +77,8 @@ public class AlbumDao {
             album.setArtista(cursor.getString(1));
             album.setNome(cursor.getString(2));
             album.setGenero(cursor.getString(3));
+            album.setDtLancamento(new Date(cursor.getLong(4)));
+
             //TODO: Preencher ativo, data e capa
         }
         db.close();
@@ -84,6 +91,7 @@ public class AlbumDao {
         values.put(dbo.ARTISTA, album.getArtista());
         values.put(dbo.NOME, album.getNome());
         values.put(dbo.GENERO, album.getGenero());
+        values.put(dbo.DT_LANCAMENTO, parser.format(album.getDtLancamento()));
         //TODO: Salvar ativo, data e capa
         if (album.getId() == null){
             db.insert(dbo.TABELA, null, values);

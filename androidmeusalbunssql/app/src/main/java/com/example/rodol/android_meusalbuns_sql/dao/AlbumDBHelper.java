@@ -34,7 +34,7 @@ public class AlbumDBHelper extends SQLiteOpenHelper{
                 ARTISTA + " text," +
                 NOME + " text," +
                 GENERO + " text," +
-                DT_LANCAMENTO + " date," +
+                DT_LANCAMENTO + " long," +
                 ATIVO + " boolean" +
                 CAPA +" blob)";
         db.execSQL(criarTabela);

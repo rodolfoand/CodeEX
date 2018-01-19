@@ -12,6 +12,7 @@ import com.example.rodol.android_meusalbuns_sql.R;
 import com.example.rodol.android_meusalbuns_sql.dao.AlbumDao;
 import com.example.rodol.android_meusalbuns_sql.model.Album;
 
+import java.text.DateFormat;
 import java.util.List;
 
 /**
@@ -24,6 +25,7 @@ public class AlbumAdapter extends BaseAdapter {
 
     private List<Album> albumList;
 
+    private final static DateFormat fmt = DateFormat.getDateInstance(DateFormat.SHORT);
 
     public AlbumAdapter(Activity activity, List<Album> albumList) {
         this.activity = activity;
@@ -59,12 +61,9 @@ public class AlbumAdapter extends BaseAdapter {
         artista.setText(album.getArtista());
         nome.setText(album.getNome());
         genero.setText(album.getGenero());
+        data.setText(fmt.format(album.getDtLancamento()));
 
         return view;
-    }
-
-    public void preencher(){
-
     }
 
     @Override
