@@ -93,15 +93,12 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                 if (album == null) {
                     album = new Album();
                 }
-                album.setAtivo(true);
                 album.setArtista(artista.getText().toString());
                 album.setNome(nome.getText().toString());
                 album.setGenero(genero.getText().toString());
-                //try {
-                    album.setDtLancamento(calendar.getTime());
-                //} catch (ParseException e){
-                //    Log.d("Erro parse data: ", e.getMessage());
-                //}
+                album.setDtLancamento(calendar.getTime());
+                album.setAtivo(true);
+
                 dao.salvar(album);
                 break;
             case android.R.id.home:
@@ -110,10 +107,6 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         return true;
-    }
-
-    public void onClickDateDialog(){
-
     }
 
     @Override
@@ -129,6 +122,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
         dialog.setView(v);
         dialog.show(getFragmentManager(), "Data de Lançamento");
         try {
+            Log.d("AlbumTeste:", data.getText().toString());
             calendar.setTime(fmt.parse(data.getText().toString()));
         } catch (ParseException e) {}
     }
