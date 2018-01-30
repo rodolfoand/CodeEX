@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.example.rodol.android_meusalbuns_sql.EditActivity;
 import com.example.rodol.android_meusalbuns_sql.R;
-import com.example.rodol.android_meusalbuns_sql.Util;
 import com.example.rodol.android_meusalbuns_sql.dao.AlbumDao;
 import com.example.rodol.android_meusalbuns_sql.model.Album;
 import com.example.rodol.android_meusalbuns_sql.view.adapter.AlbumAdapterRecycler;
@@ -54,11 +53,10 @@ public class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnC
         artista.setText(album.getArtista());
         nome.setText(album.getNome());
         genero.setText(album.getGenero());
-        data.setText(fmt.format(album.getDtLancamento()));
-        try {
-            capa.setImageBitmap(Util.bitmapFromBase64(album.getCapa()));
-        } catch (Exception e){}
-        //TODO: capa
+        if (album.getDtLancamento() != null) {
+            data.setText(fmt.format(album.getDtLancamento()));
+        }
+        //TODO: Data e capa
 
 
     }

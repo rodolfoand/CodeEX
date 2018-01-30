@@ -47,11 +47,18 @@ public class AlbumDao {
             album.setArtista(cursor.getString(1));
             album.setNome(cursor.getString(2));
             album.setGenero(cursor.getString(3));
+            //album.setDtLancamento(new Date(cursor.getLong(4)));
             Calendar calendar = Calendar.getInstance();
             try {
+                /*
+                Log.d("AlbumTeste:", "cursor: " + cursor.getString(4));
+                Log.d("AlbumTeste:", "fmt: " + fmt.parse(cursor.getString(4)).toString());
+                Log.d("AlbumTeste:", "parser: " + parser.parse(cursor.getString(4)).toString());
+                */
                 calendar.setTime(fmt.parse(cursor.getString(4)));
             } catch (ParseException e) {}
             album.setDtLancamento(calendar.getTime());
+            //album.setAtivo(cursor.getString(5).equals("1"));
             //TODO: Preencher ativo, e capa
             albuns.add(album);
         }

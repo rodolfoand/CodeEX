@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:defaultValue="@string/ordem_default"
+        android:entries="@array/ordem_itens"
+        android:entryValues="@array/ordem_itens"
+        android:key="@string/ordem_key"
+        android:summary="@string/ordem_sumario"
+        android:title="@string/ordem_titulo" />
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="@string/filtro_key"
+        android:title="@string/filtro_titulo" />
+    <ListPreference
+        android:defaultValue="@string/lista_default"
+        android:entries="@array/lista_itens"
+        android:entryValues="@array/lista_itens"
+        android:key="@string/lista_key"
+        android:summary="@string/lista_sumario"
+        android:title="@string/lista_titulo" />
+</PreferenceScreen>

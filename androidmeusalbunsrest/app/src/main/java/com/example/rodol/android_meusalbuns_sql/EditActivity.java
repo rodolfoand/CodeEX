@@ -2,10 +2,7 @@ package com.example.rodol.android_meusalbuns_sql;
 
 import android.app.ActionBar;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
@@ -71,14 +68,6 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                         //calendar.setTime(album.getDtLancamento());
                         //data.setText(album.getDtLancamento());
                     }
-
-                    try {
-                        capa.setImageBitmap(Util.bitmapFromBase64(album.getCapa()));
-                    } catch (Exception e) {
-                        if (!artista.getText().toString().isEmpty()) {
-                            capa.setImageBitmap(getBitmapLetra(artista.getText().toString()));
-                        }
-                    }
                 }
             }
         }
@@ -104,12 +93,14 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                 if (album == null) {
                     album = new Album();
                 }
-                album.setAtivo(true);
                 album.setArtista(artista.getText().toString());
                 album.setNome(nome.getText().toString());
                 album.setGenero(genero.getText().toString());
+                try {
+                    calendar.setTime(fmt.parse(data.getText().toString()));
+                } catch (ParseException e) {}
                 album.setDtLancamento(calendar.getTime());
-                album.setCapa(Util.bitmapToBase64(((BitmapDrawable)capa.getDrawable()).getBitmap()));
+                album.setAtivo(true);
 
                 dao.salvar(album);
                 break;
@@ -137,16 +128,5 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
             Log.d("AlbumTeste:", data.getText().toString());
             calendar.setTime(fmt.parse(data.getText().toString()));
         } catch (ParseException e) {}
-    }
-
-    public Bitmap getBitmapLetra(String texto){
-        Bitmap bitmap = Util.circularBitmapAndText(
-                ContextCompat.getColor(this
-                        , R.color.colorPrimary)
-                , 200
-                , 200
-                , texto.substring(0,1).toUpperCase());
-        //Log.d("Album", "Width: " + capa.getWidth() + "Height: " + capa.getHeight());
-        return bitmap;
     }
 }
