@@ -109,7 +109,14 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                 album.setNome(nome.getText().toString());
                 album.setGenero(genero.getText().toString());
                 album.setDtLancamento(calendar.getTime());
-                album.setCapa(Util.bitmapToBase64(((BitmapDrawable)capa.getDrawable()).getBitmap()));
+
+                //if (Util.bitmapFromImageView(capa) == null)
+                    capa.setImageBitmap(getBitmapLetra(artista.getText().toString()));
+
+                Bitmap bitmap = Util.bitmapFromImageView(capa);
+                if (bitmap != null) {
+                    album.setCapa(Util.bitmapToBase64(bitmap));
+                }
 
                 dao.salvar(album);
                 break;

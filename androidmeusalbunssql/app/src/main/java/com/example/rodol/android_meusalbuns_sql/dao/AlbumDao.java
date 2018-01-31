@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
 
 import com.example.rodol.android_meusalbuns_sql.model.Album;
@@ -36,8 +37,8 @@ public class AlbumDao {
 
     public List<Album> getList(String ordem){
         List<Album> albuns = new LinkedList<>();
-        String rQuery = "SELECT _id, artista, nome, genero, dt_lancamento, ativo FROM " + dbo.TABELA;
-                //+ " WHERE ativo = ?";
+        String rQuery = "SELECT * FROM " + dbo.TABELA
+                + " WHERE ativo = 1";
         db = dbo.getReadableDatabase();
         Cursor cursor = db.rawQuery(rQuery, null);
         Album album;
@@ -52,7 +53,10 @@ public class AlbumDao {
                 calendar.setTime(fmt.parse(cursor.getString(4)));
             } catch (ParseException e) {}
             album.setDtLancamento(calendar.getTime());
-            //TODO: Preencher ativo, e capa
+            album.setAtivo(cursor.getString(5).equals("1"));
+            album.setCapa(cursor.getBlob(6).length > 0 ? cursor.getBlob(6) : null);
+            //Log.d("AlbumCapa", cursor.getBlob(6).toString());
+            //TODO: Preencher  capa
             albuns.add(album);
         }
         db.close();
@@ -102,18 +106,36 @@ public class AlbumDao {
 
     public void salvar(Album album){
         db = dbo.getWritableDatabase();
+
         ContentValues values = new ContentValues();
         values.put(dbo.ARTISTA, album.getArtista());
         values.put(dbo.NOME, album.getNome());
         values.put(dbo.GENERO, album.getGenero());
         values.put(dbo.DT_LANCAMENTO, parser.format(album.getDtLancamento()));
         values.put(dbo.ATIVO, album.isAtivo());
-        //TODO: Salvar ativo e capa
+        values.put(dbo.CAPA, album.getCapa() != null ? album.getCapa() : new byte[] {});
+        //TODO: Salvar capa
         if (album.getId() == null){
             db.insert(dbo.TABELA, null, values);
         } else {
             db.update(dbo.TABELA, values, "_id = ?", new String[]{String.valueOf(album.getId())});
         }
+        /*
+        String sql = "update "+dbo.TABELA+" set "+
+                dbo.ARTISTA+"=?, "+dbo.NOME+"=?, "+dbo.GENERO+"=?, "+
+                //dbo.DT_LANCAMENTO+"=?, "+
+                dbo.ATIVO+"=?, "+dbo.CAPA+"=?" +
+                " where _id=?";
+        SQLiteStatement update = db.compileStatement(sql);
+        update.bindString(1, album.getArtista());
+        update.bindString(2, album.getNome());
+        update.bindString(3, album.getGenero());
+        //update.bindString(4, parser.format(album.getDtLancamento()));
+        update.bindLong(5, (album.isAtivo() ? 1 : 0));
+        update.bindBlob(6, album.getCapa() != null ? album.getCapa() : new byte[] {});
+        update.bindLong(7, album.getId());
+        update.execute();
+        */
         db.close();
     }
 
