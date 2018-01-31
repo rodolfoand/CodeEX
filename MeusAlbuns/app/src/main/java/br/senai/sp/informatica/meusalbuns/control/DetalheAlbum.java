@@ -192,7 +192,7 @@ public class DetalheAlbum extends AppCompatActivity implements View.OnClickListe
                         , R.color.colorPrimary)
                 , 200
                 , 600
-                , texto.substring(0,1).toUpperCase());
+                , texto.substring   (0,1).toUpperCase());
         return bitmap;
     }
 

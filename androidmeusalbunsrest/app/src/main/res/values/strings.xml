@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">REST Meus Albuns</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="ordem_default">Banda</string>
+    <string name="ordem_titulo">Ordem dos Albuns</string>
+    <string name="ordem_key">ORDEM_DA_LISTA</string>
+    <string name="ordem_sumario">Define a ordem como os albuns aparecerão na lista principal.</string>
+    <string-array name="ordem_itens">
+        <item>Artista</item>
+        <item>Album</item>
+    </string-array>
+
+    <string name="lista_default">RecyclerView</string>
+    <string name="lista_titulo">Modo de lista</string>
+    <string name="lista_key">MODO_DE_LISTA</string>
+    <string name="lista_sumario">Define a estrutura interna para estruturação da lista principal.</string>
+    <string-array name="lista_itens">
+        <item>ListView</item>
+        <item>RecyclerView</item>
+    </string-array>
+
+
+    <string name="filtro_titulo">Filtro de Albuns</string>
+    <string name="filtro_key">FILTRO_HABILITADO</string>
+</resources>

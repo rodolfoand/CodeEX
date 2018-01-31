@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.rodol.android_meusalbuns_sql.EditActivity;
 import com.example.rodol.android_meusalbuns_sql.R;
+import com.example.rodol.android_meusalbuns_sql.Util;
 import com.example.rodol.android_meusalbuns_sql.dao.AlbumDao;
 import com.example.rodol.android_meusalbuns_sql.model.Album;
 import com.example.rodol.android_meusalbuns_sql.view.adapter.AlbumAdapterRecycler;
@@ -33,7 +34,7 @@ public class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     private final int EDITA_ALBUM = 0;
 
-    private final static DateFormat fmt = DateFormat.getDateInstance(DateFormat.LONG);
+    private final static DateFormat fmt = DateFormat.getDateInstance(DateFormat.SHORT);
 
     public AlbumViewHolder(View itemView, AlbumAdapterRecycler adapterRecycler) {
         super(itemView);
@@ -54,7 +55,10 @@ public class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnC
         nome.setText(album.getNome());
         genero.setText(album.getGenero());
         data.setText(fmt.format(album.getDtLancamento()));
-        //TODO: Data e capa
+        try {
+            capa.setImageBitmap(Util.bitmapFromBase64(album.getCapa()));
+        } catch (Exception e){}
+        //TODO: capa
 
 
     }
