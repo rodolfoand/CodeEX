@@ -58,7 +58,6 @@ public class AlbumViewHolder extends RecyclerView.ViewHolder implements View.OnC
         try {
             capa.setImageBitmap(Util.bitmapFromBase64(album.getCapa()));
         } catch (Exception e){}
-        //TODO: capa
 
 
     }

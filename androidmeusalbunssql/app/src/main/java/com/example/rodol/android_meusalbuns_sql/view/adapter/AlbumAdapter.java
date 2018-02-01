@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.rodol.android_meusalbuns_sql.R;
+import com.example.rodol.android_meusalbuns_sql.Util;
 import com.example.rodol.android_meusalbuns_sql.dao.AlbumDao;
 import com.example.rodol.android_meusalbuns_sql.model.Album;
 
@@ -62,6 +63,9 @@ public class AlbumAdapter extends BaseAdapter {
         nome.setText(album.getNome());
         genero.setText(album.getGenero());
         data.setText(fmt.format(album.getDtLancamento()));
+        try {
+            capa.setImageBitmap(Util.bitmapFromBase64(album.getCapa()));
+        } catch (Exception e){}
 
         return view;
     }

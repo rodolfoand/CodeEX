@@ -72,12 +72,12 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                         //data.setText(album.getDtLancamento());
                     }
 
-                    try {
-                        capa.setImageBitmap(Util.bitmapFromBase64(album.getCapa()));
-                    } catch (Exception e) {
-                        if (!artista.getText().toString().isEmpty()) {
-                            capa.setImageBitmap(getBitmapLetra(artista.getText().toString()));
-                        }
+                    if (Util.bitmapFromImageView(capa) == null)
+                        capa.setImageBitmap(getBitmapLetra(artista.getText().toString()));
+
+                    Bitmap bitmap = Util.bitmapFromImageView(capa);
+                    if (bitmap != null) {
+                        album.setCapa(Util.bitmapToBase64(bitmap));
                     }
                 }
             }
@@ -110,7 +110,7 @@ public class EditActivity extends AppCompatActivity implements View.OnClickListe
                 album.setGenero(genero.getText().toString());
                 album.setDtLancamento(calendar.getTime());
 
-                //if (Util.bitmapFromImageView(capa) == null)
+                if (Util.bitmapFromImageView(capa) == null)
                     capa.setImageBitmap(getBitmapLetra(artista.getText().toString()));
 
                 Bitmap bitmap = Util.bitmapFromImageView(capa);
