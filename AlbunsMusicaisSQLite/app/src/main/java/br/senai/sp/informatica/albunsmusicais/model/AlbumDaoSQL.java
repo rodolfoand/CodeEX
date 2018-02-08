@@ -5,35 +5,20 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 
-import org.codehaus.jackson.map.ObjectMapper;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.net.HttpURLConnection;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import br.senai.sp.informatica.albunsmusicais.Main;
-import br.senai.sp.informatica.albunsmusicais.lib.UtilJson;
 
 /**
  * Created by pena on 18/11/2017.
  */
 
-public class AlbumDao extends SQLiteOpenHelper {
+public class AlbumDaoSQL extends SQLiteOpenHelper {
+    public static AlbumDaoSQL instance = new AlbumDaoSQL();
 
-    public static AlbumDao instance = new AlbumDao();
-
-    public int code;
-    public String json;
-    private String url = "http://172.16.2.250:8080/AlbumServer/";
-
-    private AlbumDao() {
+    private AlbumDaoSQL() {
         super(Main.getContext(), "DbAlbum", null, 3);
     }
 
@@ -136,13 +121,29 @@ public class AlbumDao extends SQLiteOpenHelper {
     }
 
     public List<Long> listarIds(String ordem) {
-        List<Long> lista = new ArrayList<>();
-        try {
-            String json = leJson(url + "lista/album");
-            ObjectMapper mapper = new ObjectMapper();
-            lista = Arrays.asList(mapper.readValue(new StringReader(json), Long[].class));
+        String query;
+        if(ordem.equals("Banda")) {
+            query = "select id from album order by banda";
+        } else if(ordem.equals("Album")){
+            query = "select id from album order by album";
+        } else {
+            query = "select id from album order by lancamento";
+        }
 
-        } catch (Exception e) {}
+        SQLiteDatabase db = getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        List<Long> lista = new ArrayList<>();
+
+        if(cursor.getCount() > 0) {
+            cursor.moveToFirst();
+
+            for (int i = 0; i < cursor.getCount(); i++) {
+                lista.add(cursor.getLong(0));
+                cursor.moveToNext();
+            }
+        }
+        cursor.close();
+        db.close();
         return lista;
     }
 
@@ -190,31 +191,5 @@ public class AlbumDao extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL("update album set del = 0 where del = 1");
         db.close();
-    }
-
-    public String leJson(final String url){
-        code = HttpURLConnection.HTTP_INTERNAL_ERROR;
-        json = null;
-
-        try {
-            HttpURLConnection connection = UtilJson.configConnection(url);
-
-            if (connection != null){
-                connection.setRequestMethod("GET");
-                connection.setDoInput(true);
-                connection.connect();
-
-                code = connection.getResponseCode();
-
-                if (code == HttpURLConnection.HTTP_OK){
-                    BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                    json = UtilJson.readJson(in);
-                    in.close();
-                }
-                connection.disconnect();
-            }
-
-        } catch (IOException e){}
-        return json;
     }
 }
