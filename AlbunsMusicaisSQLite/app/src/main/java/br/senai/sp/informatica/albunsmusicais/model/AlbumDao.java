@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
+import android.util.Log;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import br.senai.sp.informatica.albunsmusicais.Main;
+import br.senai.sp.informatica.albunsmusicais.lib.JSONParser;
 import br.senai.sp.informatica.albunsmusicais.lib.UtilJson;
 
 /**
@@ -90,43 +92,27 @@ public class AlbumDao extends SQLiteOpenHelper {
     }
 
     public void salvar(Album obj) {
-        // Abre o banco de dados para escrita
-        SQLiteDatabase db = getWritableDatabase();
 
-        // Produra registro com o mesmo nome
-        Cursor cursor = db.rawQuery("select * from album " +
-                        "where lower(banda)=? and lower(album)=?",
-                new String[]{
-                        obj.getBanda().toLowerCase(),
-                        obj.getAlbum().toLowerCase()
-                }
-        );
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            String json = mapper.writeValueAsString(obj);
+            if (obj.getId() == null) {
 
-        if (cursor.getCount() == 0) { // Não encontrado, salva
-            String sql = "insert into album (banda, album, genero, lancamento, del, capa) " +
-                    "values (?,?,?,?,?,?)";
-            SQLiteStatement insert = db.compileStatement(sql);
-            setData(insert, obj);
-            insert.execute();
-            cursor.close();
-            cursor = db.rawQuery("select last_insert_rowid() from album", null);
-            if(cursor.getCount() > 0) {
-                cursor.moveToFirst();
-                obj.setId(cursor.getLong(0));
+                new JSONParser.Incluir(url, json, new JSONParser.LocationAndDataCallBack() {
+                    @Override
+                    public void setResponse(int code, String location, String json) {
+                        Log.d("AlbumResponse", "code: " + String.valueOf(code));
+                    }
+                }).execute();
+            } else {
+                new JSONParser.Alterar(url + "album/" + obj.getId(), json, new JSONParser.LocationCallBack() {
+                    @Override
+                    public void setResponse(int code, String location) {
+                        Log.d("AlbumResponse", "code: " + String.valueOf(code));
+                    }
+                }).execute();
             }
-        } else {       // Encontrado, atualiza
-            cursor.moveToFirst();
-            obj.setId(cursor.getLong(0));
-
-            String sql = "update album set banda=?, album=?, genero=?, lancamento=?, del=?, capa=?" +
-                    "where id=?";
-            SQLiteStatement update = db.compileStatement(sql);
-            setData(update, obj);
-            update.bindLong(7, obj.getId());
-            update.execute();
-        }
-        cursor.close();
-        db.close();
+        } catch (Exception e){Log.d("Album", "Erro ao incluir.");}
     }
 
     public void remover(Long id) {
@@ -138,27 +124,40 @@ public class AlbumDao extends SQLiteOpenHelper {
     public List<Long> listarIds(String ordem) {
         List<Long> lista = new ArrayList<>();
         try {
-            String json = leJson(url + "lista/album");
+            String json = new JSONParser.Consultar(url + "lista/" + ordem.toLowerCase(), new JSONParser.DataCallBack() {
+                @Override
+                public void setResponse(int code, String json) {
+
+                }
+            }).execute().get();
             ObjectMapper mapper = new ObjectMapper();
             lista = Arrays.asList(mapper.readValue(new StringReader(json), Long[].class));
-
-        } catch (Exception e) {}
+        } catch (Exception e) {Log.d("Album", "Erro ao listar os IDs");}
         return lista;
     }
 
     public Album localizar(Long id) {
-        SQLiteDatabase db = getWritableDatabase();
-        Cursor cursor = db.rawQuery("select * from album where id=?",
-                new String[] {String.valueOf(id)});
-        Album obj = null;
-        if(cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            obj = getData(cursor);
-        }
-        cursor.close();
-        db.close();
+        Album album = null;
 
-        return obj;
+        try{
+            //String json = leJson(url + "album/" + id);
+
+            String json = new JSONParser.Consultar(url + "album/" + id, new JSONParser.DataCallBack() {
+                @Override
+                public void setResponse(int code, String json) {
+
+                }
+            }).execute().get();
+
+
+
+            if (!json.isEmpty()){
+                ObjectMapper mapper = new ObjectMapper();
+                album = mapper.readValue(new StringReader(json), Album.class);
+            }
+        } catch (Exception e){}
+
+        return album;
     }
 
     public void removerMarcados() {

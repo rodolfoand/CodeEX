@@ -3,6 +3,8 @@ package br.senai.sp.informatica.albunsmusicais.model;
 import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -74,6 +76,7 @@ public class Album implements Comparable<Album> {
         return lancamento;
     }
 
+    @JsonIgnore
     public String getDataDeLancamento() {
         return fmtData.format(lancamento);
     }
